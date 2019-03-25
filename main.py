@@ -39,7 +39,15 @@ functions = {
     'STURW': f.sturw,
     'STXR': f.stxr,
 }
+def load_registers():
+    str = input("Enter initial memory values: ")
+    values = str.split()
+    #TODO: tokenize string
+    for i in range(0, len(values)-1, 2):
+        s.registers[int(values[i])] = int(values[i+1])
 
 #
 #x = input("Enter Function: ")
 #functions[x](['Hello', 3, 'GoodBye'])
+load_registers()
+print(s.registers)
