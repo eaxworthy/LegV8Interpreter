@@ -1,8 +1,12 @@
 import numpy as np
 import funcs as f
 import state as s
+import bitstring as b
 import re
 
+# To see the values stored in a registers in a certain format:
+#    print(b.(s.registers[int(values[i])]).int)
+# where .int is replaces with .(chosen format)
 
 functions = {
     'ADD': f.add,
@@ -41,17 +45,18 @@ functions = {
     'STXR': f.stxr,
 }
 def load_registers():
-    str = input("Enter initial memory values: ")
-    values = str.split()
+    st = input("Enter initial memory values: ")
+    values = st.split()
     #TODO: tokenize string
     for i in range(0, len(values)-1, 2):
-        s.registers[int(values[i])] = int(values[i+1])
+        temp = hex(int(values[i+1], 0) if int(values[i+1], 0)>0 else int(values[i+1], 0)+(2**64))
+        s.registers[int(values[i])] = b.BitArray(hex = temp)
 
-#
-x = input("Enter Instruction: ")
-x = re.sub(r'[^\w\s]','',x)
-print(x)
-values = x.split()
-functions[values[0]](values[1::])
-#load_registers()
+
+load_registers()
 #print(s.registers)
+#x = input("Enter Instruction: ")
+#x = re.sub(r'[^\w\s]','',x)
+#print(x)
+#values = x.split()
+#functions[values[0]](values[1::])

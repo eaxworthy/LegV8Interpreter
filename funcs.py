@@ -6,7 +6,13 @@ rD = 0
 iM = 0
 
 def add(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    print(registers[rD])
+    registers[rD] = registers[rN] + registers[rM]
+    print(registers[rD])
+
 
 def addi(args):
     rD = int(args[0][1::])
@@ -17,7 +23,14 @@ def addi(args):
     print(registers[rD])
 
 def adds(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    print(registers[rD])
+    registers[rD] = registers[rN] + registers[rM]
+    if not registers[rD]:
+        flags[0] = 1
+    print(registers[rD], flags[0])
 
 def addis(args):
     return
