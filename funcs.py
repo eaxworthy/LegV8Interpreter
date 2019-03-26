@@ -1,10 +1,20 @@
 from state import registers, flags
 
+rM = 0
+rN = 0
+rD = 0
+iM = 0
+
 def add(args):
     return
 
 def addi(args):
-    print(args[0])
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    print(registers[rD])
+    registers[rD] = registers[rN] + iM
+    print(registers[rD])
 
 def adds(args):
     return

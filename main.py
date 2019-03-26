@@ -1,6 +1,7 @@
 import numpy as np
 import funcs as f
 import state as s
+import re
 
 
 functions = {
@@ -47,7 +48,10 @@ def load_registers():
         s.registers[int(values[i])] = int(values[i+1])
 
 #
-#x = input("Enter Function: ")
-#functions[x](['Hello', 3, 'GoodBye'])
-load_registers()
-print(s.registers)
+x = input("Enter Instruction: ")
+x = re.sub(r'[^\w\s]','',x)
+print(x)
+values = x.split()
+functions[values[0]](values[1::])
+#load_registers()
+#print(s.registers)
