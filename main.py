@@ -3,6 +3,7 @@ import funcs as f
 import state as s
 import bitstring as b
 import re
+import sys
 
 # To see the values stored in a registers in a certain format:
 #    print(b.(s.registers[int(values[i])]).int)
@@ -44,13 +45,20 @@ functions = {
     'STURW': f.sturw,
     'STXR': f.stxr,
 }
+
 def load_registers():
     st = input("Enter initial memory values: ")
     values = st.split()
     #TODO: tokenize string
     for i in range(0, len(values)-1, 2):
+
+        #translate input into a hex value 2's complement
         temp = hex(int(values[i+1], 0) if int(values[i+1], 0)>0 else int(values[i+1], 0)+(2**64))
-        s.registers[int(values[i])] = b.BitArray(hex = temp)
+        #translate back into signed int >:(
+
+        print(temp)
+        #s.registers[int(values[i])] = b.BitArray(int = temp, length = 64)
+        #print(s.registers[int(values[i])].int)
 
 
 load_registers()
