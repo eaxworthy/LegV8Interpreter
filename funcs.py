@@ -9,27 +9,23 @@ def add(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    print(registers[rD])
-    registers[rD] = registers[rN] + registers[rM]
-    print(registers[rD])
-
+    registers[rD] = registers[rN].int + registers[rM].int
 
 def addi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    print(registers[rD])
-    registers[rD] = registers[rN] + iM
-    print(registers[rD])
+    registers[rD] = registers[rN].int + iM
 
 def adds(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    print(registers[rD])
-    registers[rD] = registers[rN] + registers[rM]
+    registers[rD] = registers[rN].int + registers[rM].int
     if not registers[rD]:
         flags[0] = 1
+    if (registers[rD] < registers[rN].int + registers[rM].int):
+        flags[3] = 1    
     print(registers[rD], flags[0])
 
 def addis(args):

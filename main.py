@@ -62,9 +62,8 @@ def load_registers():
         (s.registers[int(values[i])]).int = temp
 
 load_registers()
-print(s.registers)
-#x = input("Enter Instruction: ")
-#x = re.sub(r'[^\w\s]','',x)
+x = input("Enter Instruction: ")
+x = re.sub(r'[^\w\s]','',x)
 #print(x)
-#values = x.split()
-#functions[values[0]](values[1::])
+values = x.split()
+functions[values[0]](values[1::])
