@@ -6,7 +6,7 @@ import re
 import sys
 
 # To see the values stored in a registers in a certain format:
-#    print(b.(s.registers[int(values[i])]).int)
+#    print(s.registers[int(values[i])].int)
 # where .int is replaces with .(chosen format)
 
 functions = {
@@ -46,23 +46,23 @@ functions = {
     'STXR': f.stxr,
 }
 
+#takes what is interpreted as a uint and returns it as int64
+def s64(value):
+    return -(value & 0x8000000000000000) | (value & 0x7fffffffffffffff)
+
 def load_registers():
     st = input("Enter initial memory values: ")
     values = st.split()
-    #TODO: tokenize string
     for i in range(0, len(values)-1, 2):
-
-        #translate input into a hex value 2's complement
-        temp = hex(int(values[i+1], 0) if int(values[i+1], 0)>0 else int(values[i+1], 0)+(2**64))
-        #translate back into signed int >:(
-
-        print(temp)
-        #s.registers[int(values[i])] = b.BitArray(int = temp, length = 64)
-        #print(s.registers[int(values[i])].int)
-
+        #bitstrings don't pad with leading 0's, so to keep 64bit size limit,
+        #we need to translate anygiven hex into a signed int. If number is
+        #above limit, the msb's will be chopped off
+        temp = values[i+1]
+        temp = s64(int(temp, 0))
+        (s.registers[int(values[i])]).int = temp
 
 load_registers()
-#print(s.registers)
+print(s.registers)
 #x = input("Enter Instruction: ")
 #x = re.sub(r'[^\w\s]','',x)
 #print(x)
