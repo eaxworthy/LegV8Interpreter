@@ -1,13 +1,32 @@
 from state import registers, flags
 
+rM = 0
+rN = 0
+rD = 0
+iM = 0
+
 def add(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    registers[rD] = registers[rN].int + registers[rM].int
 
 def addi(args):
-    print(args[0])
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    registers[rD] = registers[rN].int + iM
 
 def adds(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    registers[rD] = registers[rN].int + registers[rM].int
+    if not registers[rD]:
+        flags[0] = 1
+    if (registers[rD] < registers[rN].int + registers[rM].int):
+        flags[3] = 1    
+    print(registers[rD], flags[0])
 
 def addis(args):
     return

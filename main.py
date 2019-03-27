@@ -1,7 +1,13 @@
 import numpy as np
 import funcs as f
 import state as s
+import bitstring as b
+import re
+import sys
 
+# To see the values stored in a registers in a certain format:
+#    print(s.registers[int(values[i])].int)
+# where .int is replaces with .(chosen format)
 
 functions = {
     'ADD': f.add,
@@ -40,6 +46,24 @@ functions = {
     'STXR': f.stxr,
 }
 
-#
-#x = input("Enter Function: ")
-#functions[x](['Hello', 3, 'GoodBye'])
+#takes what is interpreted as a uint and returns it as int64
+def s64(value):
+    return -(value & 0x8000000000000000) | (value & 0x7fffffffffffffff)
+
+def load_registers():
+    st = input("Enter initial memory values: ")
+    values = st.split()
+    for i in range(0, len(values)-1, 2):
+        #bitstrings don't pad with leading 0's, so to keep 64bit size limit,
+        #we need to translate anygiven hex into a signed int. If number is
+        #above limit, the msb's will be chopped off
+        temp = values[i+1]
+        temp = s64(int(temp, 0))
+        (s.registers[int(values[i])]).int = temp
+
+load_registers()
+x = input("Enter Instruction: ")
+x = re.sub(r'[^\w\s]','',x)
+#print(x)
+values = x.split()
+functions[values[0]](values[1::])
