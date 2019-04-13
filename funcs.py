@@ -45,13 +45,33 @@ def addis(args):
     return
 
 def aand(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    registers[rD].int = registers[rN].int & registers[rM].int
 
 def andi(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    registers[rD].int = registers[rN].int & iM
 
 def ands(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    registers[rD].int = s64(registers[rN].int & registers[rM].int)
+    #show stored result as int and hex
+    print(registers[rD].int, ' ', registers[rD])
+    if not registers[rD].int:
+        flags[0] = 1
+    if registers[rD].int < 0:
+        flags[1] = 1
+    if (registers[rD].int < registers[rN].int & registers[rM].int):
+        flags[2] = 1
+        flags[3] = 1
+    #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
+    print(flags)
 
 def andis(args):
     return
@@ -75,10 +95,16 @@ def cbnz(args):
     return
 
 def eor(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    registers[rD].int = registers[rN].int ^ registers[rM].int
 
 def eori(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    registers[rD].int = registers[rN].int ^ iM
 
 def ldur(args):
     return
@@ -102,19 +128,45 @@ def lsr(args):
     return
 
 def orr(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    registers[rD].int = registers[rN].int | registers[rM].int
 
 def orri(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    registers[rD].int = registers[rN].int | iM
 
 def sub(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    registers[rD].int = registers[rN].int - registers[rM].int
 
 def subi(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    registers[rD].int = registers[rN].int - iM
 
 def subs(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    rM = int(args[2][1::])
+    registers[rD].int = s64(registers[rN].int - registers[rM].int)
+    #show stored result as int and hex
+    print(registers[rD].int, ' ', registers[rD])
+    if not registers[rD].int:
+        flags[0] = 1
+    if registers[rD].int < 0:
+        flags[1] = 1
+    if (registers[rD].int < registers[rN].int - registers[rM].int):
+        flags[2] = 1
+        flags[3] = 1
+    #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
+    print(flags)
 
 def subis(args):
     return
