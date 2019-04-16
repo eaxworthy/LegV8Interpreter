@@ -89,10 +89,18 @@ def br(args):
     return
 
 def cbz(args):
-    return
-
+    rN = int(args[0][1::])
+   
+    if rN == 0:
+        #Jump to label stored in array
+    # Else return
+        
 def cbnz(args):
-    return
+    rN = int(args[0][1::])
+    
+    if rN != 0:
+        #Jump to label stored in array
+    # Else return
 
 def eor(args):
     rD = int(args[0][1::])
@@ -122,10 +130,16 @@ def ldxr(args):
     return
 
 def lsl(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    registers[rD].int = registers[rN].int << iM
 
 def lsr(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    registers[rD].int = registers[rN].int >> iM
 
 def orr(args):
     rD = int(args[0][1::])
