@@ -42,7 +42,22 @@ def adds(args):
 
 
 def addis(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    registers[rD].int = s64(registers[rN].int + iM)
+    #show stored result as int and hex
+    print(registers[rD].int, ' ', registers[rD])
+    if not registers[rD].int:
+        flags[0] = 1
+    if registers[rD].int < 0:
+        flags[1] = 1
+    if (registers[rD].int < registers[rN].int + iM):
+        flags[2] = 1
+        flags[3] = 1
+    #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
+    print(flags)
 
 def aand(args):
     rD = int(args[0][1::])
@@ -74,7 +89,22 @@ def ands(args):
     print(flags)
 
 def andis(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    registers[rD].int = s64(registers[rN].int & iM)
+    #show stored result as int and hex
+    print(registers[rD].int, ' ', registers[rD])
+    if not registers[rD].int:
+        flags[0] = 1
+    if registers[rD].int < 0:
+        flags[1] = 1
+    if (registers[rD].int < registers[rN].int & iM):
+        flags[2] = 1
+        flags[3] = 1
+    #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
+    print(flags)
 
 def b(args):
     return
@@ -183,7 +213,22 @@ def subs(args):
     print(flags)
 
 def subis(args):
-    return
+    rD = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    registers[rD].int = s64(registers[rN].int - iM)
+    #show stored result as int and hex
+    print(registers[rD].int, ' ', registers[rD])
+    if not registers[rD].int:
+        flags[0] = 1
+    if registers[rD].int < 0:
+        flags[1] = 1
+    if (registers[rD].int < registers[rN].int - iM):
+        flags[2] = 1
+        flags[3] = 1
+    #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
+    print(flags)
 
 def stur(args):
     return
