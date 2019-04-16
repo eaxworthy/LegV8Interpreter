@@ -2,7 +2,10 @@
 #      to make 2's complement easier so that we don't go over
 #      the 8 byte size limit?
 import bitstring as b
+
 registers = []
+#memory = []
+
 for count in range(32):
     x = b.BitArray(int = 0, length = 64)
     registers.append(x)
