@@ -107,28 +107,38 @@ def andis(args):
     print(flags)
 
 def b(args):
+    # PC = LabelAddress
     return
 
 def bcond(args):
+    #rT = int(args[0][1::])
+   
+    #if flags set to any of the conditonal notices
+    # then do PC = PC + signExtended(Label << 2)
     return
 
 def bl(args):
     return
 
 def br(args):
+    # rD = int(args[0][1::])
+    # NEED A PC var in global
+    # PC = registers[rD].int
     return
 
 def cbz(args):
-    rN = int(args[0][1::])
+    rT = int(args[0][1::])
    
-    if rN == 0:
+    if registers[rT].int == 0:
+        # PC = PC + SignExtended(Label << 2)
         #Jump to label stored in array
     # Else return
         
 def cbnz(args):
-    rN = int(args[0][1::])
+    rT = int(args[0][1::])
     
-    if rN != 0:
+    if registers[rT].int != 0:
+        # PC = PC + SignExtended(Label << 2)
         #Jump to label stored in array
     # Else return
 
@@ -145,6 +155,12 @@ def eori(args):
     registers[rD].int = registers[rN].int ^ iM
 
 def ldur(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    #registers[rT].int = mem[s64(registers[rN].int + iM)]
+    
     return
 
 def ldurb(args):
@@ -231,6 +247,11 @@ def subis(args):
     print(flags)
 
 def stur(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    #mem[s64(registers[rN].int + iM)]= registers[rT].int
     return
 
 def sturb(args):
