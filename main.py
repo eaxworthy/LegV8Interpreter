@@ -58,6 +58,22 @@ def load_registers():
         (s.registers[int(values[i])]).int = temp
 
 load_registers()
+
+''' Code for a txt file
+
+LegCode = []
+with open("test.txt", 'r') as f:
+    lines = f.readlines()
+    LegCode.append(lines)
+    
+for i in range(len(LegCode)):
+    x = LegCode[i]
+    x = re.sub(r'[^\w\s]','',x)
+    #print(x)
+    values = x.split()
+    functions[values[0]](values[1::])
+'''
+    
 x = input("Enter Instruction: ")
 x = re.sub(r'[^\w\s]','',x)
 #print(x)
