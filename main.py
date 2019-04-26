@@ -20,6 +20,21 @@ functions = {
     'ANDIS': f.andis,
     'B': f.b,
     'B.cond': f.bcond,
+    '''
+    MAY NEED THESE INSTEAD OF B.cond
+    'B.EQ': f.beq,
+    'B.NE': f.bne,
+    'B.LT': f.blt
+    'B.LE': f.ble,
+    'B.LTE': f.blte,
+    'B.GT': f.bgt,
+    'B.GE': f.bge,
+    'B.GTE': f.bgte,
+    'B.HS': f.bhs,
+    'B.LO': f.blo,
+    'B.LS': f.bls,
+    'B.HI': f.bhi,
+    '''
     'BL': f.bl,
     'BR': f.br,
     'CBZ': f.cbz,
