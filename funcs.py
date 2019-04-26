@@ -108,7 +108,10 @@ def andis(args):
 
 def b(args):
     # Find the label location
-    # N = LabelAddress
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if label in LegCode[j]:
+            N = j
     return
 
 def bcond(args):
@@ -128,20 +131,22 @@ def br(args):
     return
 
 def cbz(args):
-    rT = int(args[0][1::])
-   
     if flags[0] == 0:
-        # N = the line# where the label: is located
-    else:
-        return
+        # Find the label location
+        label = values[2] + ": "
+        for j in range(len(LegCode)):
+            if label in LegCode[j]:
+                N = j
+    return
         
 def cbnz(args):
-    rT = int(args[0][1::])
-    
     if flags[0] != 0:
-        # N = the line# where the label: is located
-    else:
-        return
+        # Find the label location
+        label = values[2] + ": "
+        for j in range(len(LegCode)):
+            if label in LegCode[j]:
+                N = j
+    return
 
 def eor(args):
     rD = int(args[0][1::])
