@@ -71,6 +71,7 @@ for N in range(len(LegCode)):
     x = re.sub(r'[^\w\s]','',x)
     #print(x)
     values = x.split()
+    # check to see if the first thing is a "label: "
     functions[values[0]](values[1::])
 '''
     
