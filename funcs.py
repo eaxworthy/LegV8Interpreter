@@ -122,6 +122,11 @@ def bcond(args):
     return
 
 def bl(args):
+    registers[30].int = N + 1
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if label in LegCode[j]:
+            N = j
     return
 
 def br(args):
