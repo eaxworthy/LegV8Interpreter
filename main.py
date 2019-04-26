@@ -66,8 +66,8 @@ with open("test.txt", 'r') as f:
     lines = f.readlines()
     LegCode.append(lines)
     
-for i in range(len(LegCode)):
-    x = LegCode[i]
+for N in range(len(LegCode)):
+    x = LegCode[N]
     x = re.sub(r'[^\w\s]','',x)
     #print(x)
     values = x.split()
