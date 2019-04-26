@@ -107,14 +107,15 @@ def andis(args):
     print(flags)
 
 def b(args):
-    # PC = LabelAddress
+    # Find the label location
+    # N = LabelAddress
     return
 
 def bcond(args):
     #rT = int(args[0][1::])
    
     #if flags set to any of the conditonal notices
-    # then do PC = PC + signExtended(Label << 2)
+    # then do N = the line# where the label: is located
     return
 
 def bl(args):
@@ -123,24 +124,24 @@ def bl(args):
 def br(args):
     # rD = int(args[0][1::])
     # NEED A PC var in global
-    # PC = registers[rD].int
+    # N = the line# where the label: is located
     return
 
 def cbz(args):
     rT = int(args[0][1::])
    
-    if registers[rT].int == 0:
-        # PC = PC + SignExtended(Label << 2)
-        #Jump to label stored in array
-    # Else return
+    if flags[0] == 0:
+        # N = the line# where the label: is located
+    else:
+        return
         
 def cbnz(args):
     rT = int(args[0][1::])
     
-    if registers[rT].int != 0:
-        # PC = PC + SignExtended(Label << 2)
-        #Jump to label stored in array
-    # Else return
+    if flags[0] != 0:
+        # N = the line# where the label: is located
+    else:
+        return
 
 def eor(args):
     rD = int(args[0][1::])
