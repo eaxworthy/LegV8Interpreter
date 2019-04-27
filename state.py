@@ -4,11 +4,14 @@
 import bitstring as b
 
 registers = []
-#memory = []
+memory = []
+stk = []
 
 for count in range(32):
     x = b.BitArray(int = 0, length = 64)
+    memory.append(x)
     registers.append(x)
+
 XZR = 31
 
 #let 0 = Z, 1 = N, 2 = C, 3 = V

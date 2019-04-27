@@ -5,6 +5,15 @@ rN = 0
 rD = 0
 iM = 0
 
+def sign_extend(value, bits):
+    sign_bit = 1 << (bits - 1)
+    return (value & (sign_bit - 1)) - (value & sign_bit)
+
+def get_byte(value, n=0):
+    goal = 0xFF
+    byte = ((value >> (8 * n)) & goal)
+    return byte
+
 #Takes a uint and returns a int64. If the original value would
 #require more than 64 bits, MSBs will be dropped until result
 #is within range
@@ -114,11 +123,74 @@ def b(args):
             N = j
     return
 
-def bcond(args):
-    #rT = int(args[0][1::])
-   
-    #if flags set to any of the conditonal notices
-    # then do N = the line# where the label: is located
+def beq(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if flags[0]:
+            N = j
+    return
+
+def bne(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if not flags[0]:
+            N = j
+    return
+
+def blt(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if flags[1] != flags[3]:
+            N = j
+    return
+
+def ble(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if not(flags[0] == 0 and flags[1] == flags[3]):
+            N = j
+    return
+
+def bgt(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if flags[0] == 0 and flags[1] == flags[3]:
+            N = j
+    return
+
+def bge(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if flags[1] == flags[3]:
+            N = j
+    return
+
+def bhs(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if flags[2]:
+            N = j
+    return
+
+def blo(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if not flags[2]:
+            N = j
+    return
+
+def bls(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if not(flags[0] == 0 and flags[2] == 1):
+            N = j
+    return
+
+def bhi(args):
+    label = values[1] + ": "
+    for j in range(len(LegCode)):
+        if not flags[0] and flags[2]:
+            N = j
     return
 
 def bl(args):
@@ -170,17 +242,34 @@ def ldur(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     
-    #registers[rT].int = mem[s64(registers[rN].int + iM)]
+    registers[rT].int = mem[s64(registers[rN].int + iM)]
     
     return
 
 def ldurb(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    registers[rT].int = get_byte(mem[s64(registers[rN].int + iM)], 0)
+
     return
 
 def ldurh(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+
+    registers[rT].int = get_byte(mem[s64(registers[rN].int + iM)], 1)
     return
 
 def ldursw(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    registers[rT].int = s64(get_byte(mem[s64(registers[rN].int + iM)], 2))
     return
 
 def ldxr(args):
@@ -262,13 +351,24 @@ def stur(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     
-    #mem[s64(registers[rN].int + iM)]= registers[rT].int
+    mem[s64(registers[rN].int + iM)]= registers[rT].int
     return
 
 def sturb(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    mem[s64(registers[rN].int + iM)]= get_byte(registers[rT].int, 0)
+
     return
 
 def sturh(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+    
+    mem[s64(registers[rN].int + iM)]= get_byte(registers[rT].int, 1)
     return
 
 def sturw(args):

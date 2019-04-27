@@ -19,22 +19,16 @@ functions = {
     'ANDS': f.ands,
     'ANDIS': f.andis,
     'B': f.b,
-    'B.cond': f.bcond,
-    '''
-    MAY NEED THESE INSTEAD OF B.cond
     'B.EQ': f.beq,
     'B.NE': f.bne,
     'B.LT': f.blt
     'B.LE': f.ble,
-    'B.LTE': f.blte,
     'B.GT': f.bgt,
     'B.GE': f.bge,
-    'B.GTE': f.bgte,
     'B.HS': f.bhs,
     'B.LO': f.blo,
     'B.LS': f.bls,
     'B.HI': f.bhi,
-    '''
     'BL': f.bl,
     'BR': f.br,
     'CBZ': f.cbz,
@@ -70,7 +64,7 @@ def load_registers():
         #above limit, the msb's will be chopped off
         temp = values[i+1]
         temp = f.s64(int(temp, 0))
-        (s.registers[int(values[i])]).int = temp
+        (s.memory[int(values[i])]).int = temp
 
 load_registers()
 
