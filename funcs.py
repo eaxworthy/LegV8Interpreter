@@ -1,4 +1,4 @@
-from state import registers, flags
+from state import REG, flags
 
 rM = 0
 rN = 0
@@ -24,26 +24,26 @@ def add(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    registers[rD].int = registers[rN].int + registers[rM].int
+    REG[rD].int = REG[rN].int + REG[rM].int
 
 def addi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    registers[rD].int = registers[rN].int + iM
+    REG[rD].int = REG[rN].int + iM
 
 def adds(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    registers[rD].int = s64(registers[rN].int + registers[rM].int)
+    REG[rD].int = s64(REG[rN].int + REG[rM].int)
     #show stored result as int and hex
-    print(registers[rD].int, ' ', registers[rD])
-    if not registers[rD].int:
+    print(REG[rD].int, ' ', REG[rD])
+    if not REG[rD].int:
         flags[0] = 1
-    if registers[rD].int < 0:
+    if REG[rD].int < 0:
         flags[1] = 1
-    if (registers[rD].int < registers[rN].int + registers[rM].int):
+    if (REG[rD].int < REG[rN].int + REG[rM].int):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
@@ -54,15 +54,15 @@ def addis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    registers[rD].int = s64(registers[rN].int + iM)
+
+    REG[rD].int = s64(REG[rN].int + iM)
     #show stored result as int and hex
-    print(registers[rD].int, ' ', registers[rD])
-    if not registers[rD].int:
+    print(REG[rD].int, ' ', REG[rD])
+    if not REG[rD].int:
         flags[0] = 1
-    if registers[rD].int < 0:
+    if REG[rD].int < 0:
         flags[1] = 1
-    if (registers[rD].int < registers[rN].int + iM):
+    if (REG[rD].int < REG[rN].int + iM):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
@@ -72,26 +72,26 @@ def aand(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    registers[rD].int = registers[rN].int & registers[rM].int
+    REG[rD].int = REG[rN].int & REG[rM].int
 
 def andi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    registers[rD].int = registers[rN].int & iM
+    REG[rD].int = REG[rN].int & iM
 
 def ands(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    registers[rD].int = s64(registers[rN].int & registers[rM].int)
+    REG[rD].int = s64(REG[rN].int & REG[rM].int)
     #show stored result as int and hex
-    print(registers[rD].int, ' ', registers[rD])
-    if not registers[rD].int:
+    print(REG[rD].int, ' ', REG[rD])
+    if not REG[rD].int:
         flags[0] = 1
-    if registers[rD].int < 0:
+    if REG[rD].int < 0:
         flags[1] = 1
-    if (registers[rD].int < registers[rN].int & registers[rM].int):
+    if (REG[rD].int < REG[rN].int & REG[rM].int):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
@@ -101,15 +101,15 @@ def andis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    registers[rD].int = s64(registers[rN].int & iM)
+
+    REG[rD].int = s64(REG[rN].int & iM)
     #show stored result as int and hex
-    print(registers[rD].int, ' ', registers[rD])
-    if not registers[rD].int:
+    print(REG[rD].int, ' ', REG[rD])
+    if not REG[rD].int:
         flags[0] = 1
-    if registers[rD].int < 0:
+    if REG[rD].int < 0:
         flags[1] = 1
-    if (registers[rD].int < registers[rN].int & iM):
+    if (REG[rD].int < REG[rN].int & iM):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
@@ -194,7 +194,7 @@ def bhi(args):
     return
 
 def bl(args):
-    registers[30].int = N + 1
+    REG[30].int = N + 1
     label = values[1] + ": "
     for j in range(len(LegCode)):
         if label in LegCode[j]:
@@ -215,7 +215,7 @@ def cbz(args):
             if label in LegCode[j]:
                 N = j
     return
-        
+
 def cbnz(args):
     if flags[0] != 0:
         # Find the label location
@@ -229,29 +229,29 @@ def eor(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    registers[rD].int = registers[rN].int ^ registers[rM].int
+    REG[rD].int = REG[rN].int ^ REG[rM].int
 
 def eori(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    registers[rD].int = registers[rN].int ^ iM
+    REG[rD].int = REG[rN].int ^ iM
 
 def ldur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    registers[rT].int = mem[s64(registers[rN].int + iM)]
-    
+
+    REG[rT].int = mem[s64(REG[rN].int + iM)]
+
     return
 
 def ldurb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    registers[rT].int = get_byte(mem[s64(registers[rN].int + iM)], 0)
+
+    REG[rT].int = get_byte(mem[s64(REG[rN].int + iM)], 0)
 
     return
 
@@ -259,17 +259,17 @@ def ldurh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
 
-    registers[rT].int = get_byte(mem[s64(registers[rN].int + iM)], 1)
+
+    REG[rT].int = get_byte(mem[s64(REG[rN].int + iM)], 1)
     return
 
 def ldursw(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    registers[rT].int = s64(get_byte(mem[s64(registers[rN].int + iM)], 2))
+
+    REG[rT].int = s64(get_byte(mem[s64(REG[rN].int + iM)], 2))
     return
 
 def ldxr(args):
@@ -279,50 +279,50 @@ def lsl(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    registers[rD].int = registers[rN].int << iM
+    REG[rD].int = REG[rN].int << iM
 
 def lsr(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    registers[rD].int = registers[rN].int >> iM
+    REG[rD].int = REG[rN].int >> iM
 
 def orr(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    registers[rD].int = registers[rN].int | registers[rM].int
+    REG[rD].int = REG[rN].int | REG[rM].int
 
 def orri(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    registers[rD].int = registers[rN].int | iM
+    REG[rD].int = REG[rN].int | iM
 
 def sub(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    registers[rD].int = registers[rN].int - registers[rM].int
+    REG[rD].int = REG[rN].int - REG[rM].int
 
 def subi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    registers[rD].int = registers[rN].int - iM
+    REG[rD].int = REG[rN].int - iM
 
 def subs(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    registers[rD].int = s64(registers[rN].int - registers[rM].int)
+    REG[rD].int = s64(REG[rN].int - REG[rM].int)
     #show stored result as int and hex
-    print(registers[rD].int, ' ', registers[rD])
-    if not registers[rD].int:
+    print(REG[rD].int, ' ', REG[rD])
+    if not REG[rD].int:
         flags[0] = 1
-    if registers[rD].int < 0:
+    if REG[rD].int < 0:
         flags[1] = 1
-    if (registers[rD].int < registers[rN].int - registers[rM].int):
+    if (REG[rD].int < REG[rN].int - REG[rM].int):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
@@ -332,15 +332,15 @@ def subis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    registers[rD].int = s64(registers[rN].int - iM)
+
+    REG[rD].int = s64(REG[rN].int - iM)
     #show stored result as int and hex
-    print(registers[rD].int, ' ', registers[rD])
-    if not registers[rD].int:
+    print(REG[rD].int, ' ', REG[rD])
+    if not REG[rD].int:
         flags[0] = 1
-    if registers[rD].int < 0:
+    if REG[rD].int < 0:
         flags[1] = 1
-    if (registers[rD].int < registers[rN].int - iM):
+    if (REG[rD].int < REG[rN].int - iM):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
@@ -350,16 +350,16 @@ def stur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    mem[s64(registers[rN].int + iM)]= registers[rT].int
+
+    mem[s64(REG[rN].int + iM)]= REG[rT].int
     return
 
 def sturb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    mem[s64(registers[rN].int + iM)]= get_byte(registers[rT].int, 0)
+
+    mem[s64(REG[rN].int + iM)]= get_byte(REG[rT].int, 0)
 
     return
 
@@ -367,8 +367,8 @@ def sturh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
-    mem[s64(registers[rN].int + iM)]= get_byte(registers[rT].int, 1)
+
+    mem[s64(REG[rN].int + iM)]= get_byte(REG[rT].int, 1)
     return
 
 def sturw(args):
