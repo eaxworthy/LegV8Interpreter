@@ -21,7 +21,7 @@ functions = {
     'B': f.b,
     'B.EQ': f.beq,
     'B.NE': f.bne,
-    'B.LT': f.blt
+    'B.LT': f.blt,
     'B.LE': f.ble,
     'B.GT': f.bgt,
     'B.GE': f.bge,
@@ -55,7 +55,7 @@ functions = {
     'STXR': f.stxr,
 }
 
-def load_registers():
+def load_memory():
     st = input("Enter initial memory values: ")
     values = st.split()
     for i in range(0, len(values)-1, 2):
@@ -64,28 +64,34 @@ def load_registers():
         #above limit, the msb's will be chopped off
         temp = values[i+1]
         temp = f.s64(int(temp, 0))
-        (s.memory[int(values[i])]).int = temp
+        (s.MEM[int(values[i])]).int = temp
+        print(s.MEM[int(values[i])])
 
-load_registers()
+load_memory()
 
 ''' Code for a txt file
-
+'''
 LegCode = []
-with open("test.txt", 'r') as f:
+with open("simple_test.txt", 'r') as f:
     lines = f.readlines()
-    LegCode.append(lines)
-    
+    for line in lines:
+        LegCode.append(line.rstrip())
+
 for N in range(len(LegCode)):
     x = LegCode[N]
     x = re.sub(r'[^\w\s]','',x)
-    #print(x)
-    values = x.split()
+    print(x)
+
+    ins_params = x.split()
     # check to see if the first thing is a "label: "
-    functions[values[0]](values[1::])
+    print("Doing Instruction: ", ins_params[0], '\n')
+    functions[ins_params[0]](ins_params[1::])
+    s.printRegs()
+
 '''
-    
 x = input("Enter Instruction: ")
 x = re.sub(r'[^\w\s]','',x)
 #print(x)
 values = x.split()
 functions[values[0]](values[1::])
+'''
