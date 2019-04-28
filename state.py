@@ -1,11 +1,10 @@
-#TODO: Maybe switch over to using bitstrings instead of numbers
-#      to make 2's complement easier so that we don't go over
-#      the 8 byte size limit?
+
 import bitstring as b
 
 REG = []
 MEM = []
 STK = []
+LBS = {}
 
 #initialize registers
 for count in range(32):

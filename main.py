@@ -69,29 +69,29 @@ def load_memory():
 
 load_memory()
 
-''' Code for a txt file
-'''
 LegCode = []
 with open("simple_test.txt", 'r') as f:
     lines = f.readlines()
     for line in lines:
         LegCode.append(line.rstrip())
 
+#First pass to collect labels. It then trims the label from the beginning of
+#the stored instruction so that we don't need to repeatedly check the beginning
+#of each lines when we enter the execution phase.
 for N in range(len(LegCode)):
     x = LegCode[N]
     x = re.sub(r'[^\w\s]','',x)
-    print(x)
+    ins_params = x.split()
+    if ins_params[0] not in functions:
+        s.LBS[ins_params[0]] = N
+        LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
+
+for N in range(len(LegCode)):
+    x = LegCode[N]
+    x = re.sub(r'[^\w\s]','',x)
 
     ins_params = x.split()
-    # check to see if the first thing is a "label: "
+    #prints for tracing basic program
     print("Doing Instruction: ", ins_params[0], '\n')
     functions[ins_params[0]](ins_params[1::])
     s.printRegs()
-
-'''
-x = input("Enter Instruction: ")
-x = re.sub(r'[^\w\s]','',x)
-#print(x)
-values = x.split()
-functions[values[0]](values[1::])
-'''
