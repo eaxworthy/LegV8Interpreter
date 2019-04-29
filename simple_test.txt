@@ -1,4 +1,4 @@
 Test: ADDI X0, X0, #0
 ADDI X0, X31, #12
-Test2: ADDI X19, X0, #0
+ADDI X19, X0, #0
 SUBI X19, X19, #12

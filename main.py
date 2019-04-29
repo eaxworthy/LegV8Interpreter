@@ -67,10 +67,12 @@ def load_memory():
         (s.MEM[int(values[i])]).int = temp
         print(s.MEM[int(values[i])])
 
+LegCode = []
 load_memory()
 
-LegCode = []
-with open("simple_test.txt", 'r') as f:
+
+progFile = input("Enter name of program file: ")
+with open(progFile, 'r') as f:
     lines = f.readlines()
     for line in lines:
         LegCode.append(line.rstrip())
@@ -82,17 +84,25 @@ for N in range(len(LegCode)):
     x = LegCode[N]
     x = re.sub(r'[^\w\s]','',x)
     ins_params = x.split()
-    print (ins_params[0])
+    #print (ins_params[0])
     if ins_params[0] not in functions:
         s.LBS[ins_params[0]] = N
         LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
 
 for N in range(len(LegCode)):
-    x = LegCode[N]
-    x = re.sub(r'[^\w\s]','',x)
+    runMode = input("Run(1) or Step(2): ")
+    if runMode == "1":
+        for M in range(N, len(LegCode)):
+            x = LegCode[M]
+            x = re.sub(r'[^\w\s]','',x)
+            ins_params = x.split()
+            functions[ins_params[0]](ins_params[1::])
+        break;
+    if runMode == "2":
+        x = LegCode[N]
+        x = re.sub(r'[^\w\s]','',x)
+        ins_params = x.split()
+        print("Doing Instruction: ", x, '\n')
+        functions[ins_params[0]](ins_params[1::])
 
-    ins_params = x.split()
-    #prints for tracing basic program
-    print("Doing Instruction: ", ins_params[0], '\n')
-    functions[ins_params[0]](ins_params[1::])
-    s.printRegs()
+s.printRegs()
