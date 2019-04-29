@@ -82,6 +82,7 @@ for N in range(len(LegCode)):
     x = LegCode[N]
     x = re.sub(r'[^\w\s]','',x)
     ins_params = x.split()
+    print (ins_params[0])
     if ins_params[0] not in functions:
         s.LBS[ins_params[0]] = N
         LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])

@@ -25,12 +25,14 @@ def add(args):
     rN = int(args[1][1::])
     rM = int(args[2][1::])
     REG[rD].int = REG[rN].int + REG[rM].int
+    return
 
 def addi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
     REG[rD].int = REG[rN].int + iM
+    return
 
 def adds(args):
     rD = int(args[0][1::])
@@ -48,6 +50,7 @@ def adds(args):
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
+    return
 
 
 def addis(args):
@@ -67,18 +70,21 @@ def addis(args):
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
+    return
 
 def aand(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
     REG[rD].int = REG[rN].int & REG[rM].int
+    return
 
 def andi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
     REG[rD].int = REG[rN].int & iM
+    return
 
 def ands(args):
     rD = int(args[0][1::])
@@ -96,6 +102,7 @@ def ands(args):
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
+    return
 
 def andis(args):
     rD = int(args[0][1::])
@@ -114,115 +121,97 @@ def andis(args):
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
+    return
 
 def b(args):
     # Find the label location
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if label in LegCode[j]:
-            N = j
+    if args[0] in s.LBS:
+        N = s.LBS[args[0]]
     return
 
 def beq(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if flags[0]:
-            N = j
+    if flags[0]:
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def bne(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if not flags[0]:
-            N = j
+    if not flags[0]:
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def blt(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if flags[1] != flags[3]:
-            N = j
+    if flags[1] != flags[3]:
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def ble(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if not(flags[0] == 0 and flags[1] == flags[3]):
-            N = j
+    if not(flags[0] == 0 and flags[1] == flags[3]):
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def bgt(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if flags[0] == 0 and flags[1] == flags[3]:
-            N = j
+    if flags[0] == 0 and flags[1] == flags[3]:
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def bge(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if flags[1] == flags[3]:
-            N = j
+    if flags[1] == flags[3]:
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def bhs(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if flags[2]:
-            N = j
+    if flags[2]:
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def blo(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if not flags[2]:
-            N = j
+    if not flags[2]:
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def bls(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if not(flags[0] == 0 and flags[2] == 1):
-            N = j
+    if not(flags[0] == 0 and flags[2] == 1):
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def bhi(args):
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if not flags[0] and flags[2]:
-            N = j
+    if not flags[0] and flags[2]:
+        if args[0] in s.LBS:
+            N = s.LBS[args[0]]
     return
 
 def bl(args):
     REG[30].int = N + 1
-    label = values[1] + ": "
-    for j in range(len(LegCode)):
-        if label in LegCode[j]:
-            N = j
+    if args[0] in s.LBS:
+        N = s.LBS[args[0]]
     return
 
 def br(args):
-    # rD = int(args[0][1::])
-    # NEED A PC var in global
-    # N = the line# where the label: is located
+    rD = int(args[0][1::])
+    N = rD
     return
 
 def cbz(args):
-    if flags[0] == 0:
-        # Find the label location
-        label = values[2] + ": "
-        for j in range(len(LegCode)):
-            if label in LegCode[j]:
-                N = j
+    rT = int(args[0][1::])
+    if REG[rT] == 0:
+        if args[1] in s.LBS:
+            N = s.LBS[args[1]]
     return
 
 def cbnz(args):
-    if flags[0] != 0:
-        # Find the label location
-        label = values[2] + ": "
-        for j in range(len(LegCode)):
-            if label in LegCode[j]:
-                N = j
+    rT = int(args[0][1::])
+    if REG[rT] != 0:
+        if args[1] in s.LBS:
+            N = s.LBS[args[1]]
     return
 
 def eor(args):
@@ -230,12 +219,14 @@ def eor(args):
     rN = int(args[1][1::])
     rM = int(args[2][1::])
     REG[rD].int = REG[rN].int ^ REG[rM].int
+    return
 
 def eori(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
     REG[rD].int = REG[rN].int ^ iM
+    return
 
 def ldur(args):
     rT = int(args[0][1::])
@@ -273,6 +264,12 @@ def ldursw(args):
     return
 
 def ldxr(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+
+    REG[rT].int = mem[s64(REG[rN].int + iM)]
+    REG[9] = 1
     return
 
 def lsl(args):
@@ -280,36 +277,42 @@ def lsl(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     REG[rD].int = REG[rN].int << iM
+    return
 
 def lsr(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
     REG[rD].int = REG[rN].int >> iM
+    return
 
 def orr(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
     REG[rD].int = REG[rN].int | REG[rM].int
+    return
 
 def orri(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
     REG[rD].int = REG[rN].int | iM
+    return
 
 def sub(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
     REG[rD].int = REG[rN].int - REG[rM].int
+    return
 
 def subi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
     REG[rD].int = REG[rN].int - iM
+    return
 
 def subs(args):
     rD = int(args[0][1::])
@@ -327,6 +330,7 @@ def subs(args):
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
+    return
 
 def subis(args):
     rD = int(args[0][1::])
@@ -345,13 +349,17 @@ def subis(args):
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
+    return
 
 def stur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
-    mem[s64(REG[rN].int + iM)]= REG[rT].int
+    
+    if rN == 28:
+        STK[REG[rN].int + iM] = REG[rT].int
+    else:
+        mem[REG[rN].int + iM] = REG[rT].int
     return
 
 def sturb(args):
@@ -359,7 +367,10 @@ def sturb(args):
     rN = int(args[1][1::])
     iM = int(args[2])
 
-    mem[s64(REG[rN].int + iM)]= get_byte(REG[rT].int, 0)
+    if rN == 28:
+        STK[REG[rN].int + iM] = get_byte(REG[rT].int, 0)
+    else:
+        mem[REG[rN].int + iM]= get_byte(REG[rT].int, 0)
 
     return
 
@@ -367,12 +378,31 @@ def sturh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
-    mem[s64(REG[rN].int + iM)]= get_byte(REG[rT].int, 1)
+    
+    if rN == 28:
+        STK[REG[rN].int + iM] = get_byte(REG[rT].int, 1)
+    else:
+        mem[REG[rN].int + iM]= get_byte(REG[rT].int, 1)
     return
 
 def sturw(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    iM = int(args[2])
+
+    if rN == 28:
+        STK[REG[rN].int + iM] = get_byte(REG[rT].int, 2)
+    else:
+        mem[REG[rN].int + iM]= get_byte(REG[rT].int, 2)
     return
 
 def stxr(args):
+    rT = int(args[0][1::])
+    rN = int(args[1][1::])
+    
+    if not REG[9]:
+        if rN == 28:
+            STK[REG[rN].int] = rT
+        else:
+            mem[REG[rN].int]= REG[rT].int
     return
