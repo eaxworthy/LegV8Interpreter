@@ -1,4 +1,5 @@
-from state import REG, flags
+from state import REG, STK, LBS, MEM, flags, printLabels
+import state as s
 
 rM = 0
 rN = 0
@@ -125,93 +126,101 @@ def andis(args):
 
 def b(args):
     # Find the label location
-    if args[0] in s.LBS:
-        N = s.LBS[args[0]]
+    if args[0] in LBS:
+        s.ip = LBS[args[0]]
     return
 
 def beq(args):
     if flags[0]:
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def bne(args):
     if not flags[0]:
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def blt(args):
     if flags[1] != flags[3]:
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def ble(args):
     if not(flags[0] == 0 and flags[1] == flags[3]):
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def bgt(args):
     if flags[0] == 0 and flags[1] == flags[3]:
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def bge(args):
     if flags[1] == flags[3]:
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def bhs(args):
     if flags[2]:
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def blo(args):
     if not flags[2]:
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def bls(args):
     if not(flags[0] == 0 and flags[2] == 1):
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def bhi(args):
     if not flags[0] and flags[2]:
-        if args[0] in s.LBS:
-            N = s.LBS[args[0]]
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
     return
 
 def bl(args):
-    REG[30].int = N + 1
-    if args[0] in s.LBS:
-        N = s.LBS[args[0]]
+    REG[30].int = s.ip + 1
+    if args[0] in LBS:
+        s.ip = LBS[args[0]]
     return
 
 def br(args):
     rD = int(args[0][1::])
-    N = rD
+    s.ip = rD
     return
 
 def cbz(args):
     rT = int(args[0][1::])
-    if REG[rT] == 0:
-        if args[1] in s.LBS:
-            N = s.LBS[args[1]]
+    if REG[rT].int == 0:
+        if args[1] in LBS:
+            s.ip = LBS[args[1]]
     return
 
 def cbnz(args):
     rT = int(args[0][1::])
-    if REG[rT] != 0:
-        if args[1] in s.LBS:
-            N = s.LBS[args[1]]
+    if REG[rT].int != 0:
+        if args[1] in LBS:
+            s.ip = LBS[args[1]]
+    return
+
+def cmpi(args):
+    print(args)
+    rT = int(args[0][1::])
+    if REG[rT].int == int(args[1]):
+        if args[1] in LBS:
+            s.ip = LBS[args[1]]
     return
 
 def eor(args):
@@ -355,11 +364,12 @@ def stur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
+    print(rT, rN, iM)
+    print(REG[rN].int + iM)
     if rN == 28:
-        STK[REG[rN].int + iM] = REG[rT].int
+        STK[REG[rN].int + iM].int = REG[rT].int
     else:
-        mem[REG[rN].int + iM] = REG[rT].int
+        mem[REG[rN].int + iM].int = REG[rT].int
     return
 
 def sturb(args):
@@ -378,7 +388,7 @@ def sturh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    
+
     if rN == 28:
         STK[REG[rN].int + iM] = get_byte(REG[rT].int, 1)
     else:
@@ -399,7 +409,7 @@ def sturw(args):
 def stxr(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
-    
+
     if not REG[9]:
         if rN == 28:
             STK[REG[rN].int] = rT

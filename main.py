@@ -33,6 +33,7 @@ functions = {
     'BR': f.br,
     'CBZ': f.cbz,
     'CBNZ': f.cbnz,
+    'CMPI': f.cmpi,
     'EOR': f.eor,
     'EORI': f.eori,
     'LDUR': f.ldur,
@@ -68,11 +69,11 @@ def load_memory():
         print(s.MEM[int(values[i])])
 
 LegCode = []
-load_memory()
+#load_memory()
 
 
-progFile = input("Enter name of program file: ")
-with open(progFile, 'r') as f:
+#progFile = input("Enter name of program file: ")
+with open("simple_test.txt", 'r') as f:
     lines = f.readlines()
     for line in lines:
         LegCode.append(line.rstrip())
@@ -89,20 +90,28 @@ for N in range(len(LegCode)):
         s.LBS[ins_params[0]] = N
         LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
 
-for N in range(len(LegCode)):
+
+while s.ip < len(LegCode):
     runMode = input("Run(1) or Step(2): ")
     if runMode == "1":
-        for M in range(N, len(LegCode)):
-            x = LegCode[M]
+        while s.ip < len(LegCode):
+            N = s.ip
+            x = LegCode[s.ip]
             x = re.sub(r'[^\w\s]','',x)
             ins_params = x.split()
             functions[ins_params[0]](ins_params[1::])
+            print("after ", x, " ip is ", s.ip)
+            if N == s.ip:
+                s.ip += 1
         break;
     if runMode == "2":
-        x = LegCode[N]
+        N = s.ip
+        x = LegCode[s.ip]
         x = re.sub(r'[^\w\s]','',x)
         ins_params = x.split()
         print("Doing Instruction: ", x, '\n')
         functions[ins_params[0]](ins_params[1::])
+        if N == s.ip:
+            s.ip += 1
 
 s.printRegs()
