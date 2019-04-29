@@ -106,6 +106,7 @@ while s.ip < len(LegCode):
         break;
     if runMode == "2":
         N = s.ip
+
         x = LegCode[s.ip]
         x = re.sub(r'[^\w\s]','',x)
         ins_params = x.split()
