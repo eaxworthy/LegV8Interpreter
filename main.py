@@ -19,16 +19,16 @@ functions = {
     'ANDS': f.ands,
     'ANDIS': f.andis,
     'B': f.b,
-    'B.EQ': f.beq,
-    'B.NE': f.bne,
-    'B.LT': f.blt,
-    'B.LE': f.ble,
-    'B.GT': f.bgt,
-    'B.GE': f.bge,
-    'B.HS': f.bhs,
-    'B.LO': f.blo,
-    'B.LS': f.bls,
-    'B.HI': f.bhi,
+    'BEQ': f.beq,
+    'NE': f.bne,
+    'LT': f.blt,
+    'LE': f.ble,
+    'GT': f.bgt,
+    'GE': f.bge,
+    'HS': f.bhs,
+    'LO': f.blo,
+    'LS': f.bls,
+    'HI': f.bhi,
     'BL': f.bl,
     'BR': f.br,
     'CBZ': f.cbz,
@@ -89,7 +89,9 @@ for N in range(len(LegCode)):
     if ins_params[0] not in functions:
         s.LBS[ins_params[0]] = N
         LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
-
+s.printLabels()
+for i in range(len(LegCode)):
+    print(LegCode[i], ' ')
 
 while s.ip < len(LegCode):
     runMode = input("Run(1) or Step(2): ")
@@ -97,22 +99,31 @@ while s.ip < len(LegCode):
         while s.ip < len(LegCode):
             N = s.ip
             x = LegCode[s.ip]
-            x = re.sub(r'[^\w\s]','',x)
-            ins_params = x.split()
-            functions[ins_params[0]](ins_params[1::])
-            print("after ", x, " ip is ", s.ip)
-            if N == s.ip:
+            if x != "":
+                x = re.sub(r'[^\w\s]','',x)
+                ins_params = x.split()
+                functions[ins_params[0]](ins_params[1::])
+                if N == s.ip:
+                    s.ip += 1
+            else:
                 s.ip += 1
         break;
     if runMode == "2":
         N = s.ip
-
         x = LegCode[s.ip]
-        x = re.sub(r'[^\w\s]','',x)
-        ins_params = x.split()
-        print("Doing Instruction: ", x, '\n')
-        functions[ins_params[0]](ins_params[1::])
-        if N == s.ip:
+        if x != "":
+            x = re.sub(r'[^\w\s]','',x)
+            ins_params = x.split()
+            print("Doing Instruction: ", x)
+            functions[ins_params[0]](ins_params[1::])
+            if N == s.ip:
+                s.ip += 1
+            doPrint = input("Print Registers Y(1) / N(2): ")
+            if doPrint == "1":
+                s.printRegs()
+            else:
+                print()
+        else:
             s.ip += 1
 
 s.printRegs()

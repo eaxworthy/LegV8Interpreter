@@ -21,6 +21,7 @@ def get_byte(value, n=0):
 def s64(value):
     return -(value & 0x8000000000000000) | (value & 0x7fffffffffffffff)
 
+#tested
 def add(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -28,6 +29,7 @@ def add(args):
     REG[rD].int = REG[rN].int + REG[rM].int
     return
 
+#tested
 def addi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -46,7 +48,7 @@ def adds(args):
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int < REG[rN].int + REG[rM].int):
+    if (REG[rD].int != REG[rN].int + REG[rM].int):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
@@ -66,7 +68,7 @@ def addis(args):
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int < REG[rN].int + iM):
+    if (REG[rD].int != REG[rN].int + iM):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
@@ -124,12 +126,14 @@ def andis(args):
     print(flags)
     return
 
+#tested
 def b(args):
     # Find the label location
     if args[0] in LBS:
         s.ip = LBS[args[0]]
     return
 
+#tested
 def beq(args):
     if flags[0]:
         if args[0] in LBS:
@@ -196,11 +200,13 @@ def bl(args):
         s.ip = LBS[args[0]]
     return
 
+#tested
 def br(args):
     rD = int(args[0][1::])
     s.ip = rD
     return
 
+#tested
 def cbz(args):
     rT = int(args[0][1::])
     if REG[rT].int == 0:
@@ -208,6 +214,7 @@ def cbz(args):
             s.ip = LBS[args[1]]
     return
 
+#tested
 def cbnz(args):
     rT = int(args[0][1::])
     if REG[rT].int != 0:
@@ -334,26 +341,26 @@ def subs(args):
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int < REG[rN].int - REG[rM].int):
+    if (REG[rD].int != REG[rN].int - REG[rM].int):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
     return
 
+#tested
 def subis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
     REG[rD].int = s64(REG[rN].int - iM)
     #show stored result as int and hex
-    print(REG[rD].int, ' ', REG[rD])
+    print(REG[rD].int, ' ', REG[rN].int - iM)
     if not REG[rD].int:
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int < REG[rN].int - iM):
+    if (REG[rD].int != REG[rN].int - iM):
         flags[2] = 1
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
