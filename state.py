@@ -37,3 +37,7 @@ def printStack():
 
 def printLabels():
     print(LBS.items())
+
+def printFlags():
+    for i in range(4):
+        print(flags[i], i)    

@@ -1,4 +1,4 @@
-from state import REG, STK, LBS, MEM, flags, printLabels
+from state import REG, STK, LBS, MEM, printLabels
 import state as s
 
 rM = 0
@@ -42,18 +42,18 @@ def adds(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    flags = [0]*4
+    s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int + REG[rM].int)
     if not REG[rD].int:
-        flags[0] = 1
+        s.flags[0] = 1
     if REG[rD].int < 0:
-        flags[1] = 1
+        s.flags[1] = 1
     if(REG[rD].uint < REG[rN].uint or REG[rD].uint < REG[rM].uint):
-        flags[2] = 1
+        s.flags[2] = 1
     if (REG[rD].int != REG[rN].int + REG[rM].int):
-        flags[3] = 1
+        s.flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
-    print(flags)
+    print(s.flags)
     return
 
 #tested
@@ -61,18 +61,18 @@ def addis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    flags = [0]*4
+    s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int + s64(iM))
     if not REG[rD].int:
-        flags[0] = 1
+        s.flags[0] = 1
     if REG[rD].int < 0:
-        flags[1] = 1
+        s.flags[1] = 1
     if(REG[rD].uint < REG[rN].uint or REG[rD] < s64(iM).uint):
-        flags[2] = 1
+        s.flags[2] = 1
     if (REG[rD].int != REG[rN].int + iM):
-        flags[3] = 1
+        s.flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
-    print(flags)
+    print(s.flags)
     return
 
 #tested
@@ -96,14 +96,14 @@ def ands(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    flags = [0]*4
+    s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int & REG[rM].int)
     #show stored result as int and hex
     if not REG[rD].int:
-        flags[0] = 1
+        s.flags[0] = 1
     if REG[rD].int < 0:
-        flags[1] = 1
-    print(flags)
+        s.flags[1] = 1
+    print(s.flags)
     return
 
 #tested
@@ -111,16 +111,16 @@ def andis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    flags = [0]*4
+    s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int & s64(iM))
     #show stored result as int and hex
     print(REG[rD].int, ' ', REG[rD])
     if not REG[rD].int:
-        flags[0] = 1
+        s.flags[0] = 1
     if REG[rD].int < 0:
-        flags[1] = 1
+        s.flags[1] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
-    print(flags)
+    print(s.flags)
     return
 
 #tested
@@ -132,75 +132,85 @@ def b(args):
 
 #tested
 def beq(args):
-    if flags[0]:
+    if s.flags[0]:
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
+#tested
 def bne(args):
-    if not flags[0]:
+    if not s.flags[0]:
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
+#tested
 def blt(args):
-    if flags[1] != flags[3]:
+    if s.flags[1] != s.flags[3]:
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
+#tested
 def ble(args):
-    if not(flags[0] == 0 and flags[1] == flags[3]):
+    if not(s.flags[0] == 0 and s.flags[1] == s.flags[3]):
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
+#tested
 def bgt(args):
-    if flags[0] == 0 and flags[1] == flags[3]:
+    if s.flags[0] == 0 and s.flags[1] == s.flags[3]:
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
+#tested
 def bge(args):
-    if flags[1] == flags[3]:
+    if s.flags[1] == s.flags[3]:
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
 def bhs(args):
-    if flags[2]:
+    if s.flags[2]:
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
 def blo(args):
-    if not flags[2]:
+    if not s.flags[2]:
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
 def bls(args):
-    if not(flags[0] == 0 and flags[2] == 1):
+    if not(s.flags[0] == 0 and s.flags[2] == 1):
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
 def bhi(args):
-    if not flags[0] and flags[2]:
+    if not s.flags[0] and s.flags[2]:
         if args[0] in LBS:
             s.ip = LBS[args[0]]
     return
 
+#tested
 def bl(args):
     REG[30].int = s.ip + 1
+    print(REG[30].int)
     if args[0] in LBS:
         s.ip = LBS[args[0]]
     return
 
 #tested
+#Due to the way ip is incremented, if REG[rD] hold the address of the Instruction
+#we want to execute immediately after br, we need to decrement it by 1, because
+#when we actually call the next instruction, ip will have been inc'd by 1
 def br(args):
     rD = int(args[0][1::])
-    s.ip = rD
+    s.ip = REG[rD].int - 1
     return
 
 #tested
@@ -333,16 +343,18 @@ def subs(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    flags = [0]*4
+    s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int - REG[rM].int)
+    print(REG[rD].int)
     if not REG[rD].int:
-        flags[0] = 1
+        s.flags[0] = 1
     if REG[rD].int < 0:
-        flags[1] = 1
+        s.flags[1] = 1
     if(REG[rN].uint < REG[rM].uint):
-            flags[2] = 1
+            s.flags[2] = 1
     if (REG[rD].int != REG[rN].int - REG[rM].int):
-        flags[3] = 1
+        s.flags[3] = 1
+    print(s.flags)
     return
 
 #tested
@@ -350,16 +362,16 @@ def subis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    flags = [0]*4
+    s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int - s64(iM))
     if not REG[rD].int:
-        flags[0] = 1
+        s.flags[0] = 1
     if REG[rD].int < 0:
-        flags[1] = 1
+        s.flags[1] = 1
     if(REG[rN].uint < iM):
-        flags[2] = 1
+        s.flags[2] = 1
     if (REG[rD].int != REG[rN].int - s64(iM)):
-        flags[3] = 1
+        s.flags[3] = 1
     return
 
 def stur(args):
@@ -418,3 +430,6 @@ def stxr(args):
         else:
             mem[REG[rN].int]= REG[rT].int
     return
+
+def setZero():
+    REG[31].int = 0

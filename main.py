@@ -20,15 +20,15 @@ functions = {
     'ANDIS': f.andis,
     'B': f.b,
     'BEQ': f.beq,
-    'NE': f.bne,
-    'LT': f.blt,
-    'LE': f.ble,
-    'GT': f.bgt,
-    'GE': f.bge,
-    'HS': f.bhs,
-    'LO': f.blo,
-    'LS': f.bls,
-    'HI': f.bhi,
+    'BNE': f.bne,
+    'BLT': f.blt,
+    'BLE': f.ble,
+    'BGT': f.bgt,
+    'BGE': f.bge,
+    'BHS': f.bhs,
+    'BLO': f.blo,
+    'BLS': f.bls,
+    'BHI': f.bhi,
     'BL': f.bl,
     'BR': f.br,
     'CBZ': f.cbz,
@@ -73,8 +73,8 @@ LegCode = []
 
 
 #progFile = input("Enter name of program file: ")
-with open("simple_test.txt", 'r') as f:
-    lines = f.readlines()
+with open("simple_test.txt", 'r') as file:
+    lines = file.readlines()
     for line in lines:
         LegCode.append(line.rstrip())
 
@@ -85,13 +85,9 @@ for N in range(len(LegCode)):
     x = LegCode[N]
     x = re.sub(r'[^\w\s]','',x)
     ins_params = x.split()
-    #print (ins_params[0])
     if ins_params[0] not in functions:
         s.LBS[ins_params[0]] = N
         LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
-s.printLabels()
-for i in range(len(LegCode)):
-    print(LegCode[i], ' ')
 
 while s.ip < len(LegCode):
     runMode = input("Run(1) or Step(2): ")
@@ -103,6 +99,7 @@ while s.ip < len(LegCode):
                 x = re.sub(r'[^\w\s]','',x)
                 ins_params = x.split()
                 functions[ins_params[0]](ins_params[1::])
+                f.setZero()
                 if N == s.ip:
                     s.ip += 1
             else:
@@ -116,13 +113,12 @@ while s.ip < len(LegCode):
             ins_params = x.split()
             print("Doing Instruction: ", x)
             functions[ins_params[0]](ins_params[1::])
+            f.setZero()
             if N == s.ip:
                 s.ip += 1
             doPrint = input("Print Registers Y(1) / N(2): ")
             if doPrint == "1":
                 s.printRegs()
-            else:
-                print()
         else:
             s.ip += 1
 
