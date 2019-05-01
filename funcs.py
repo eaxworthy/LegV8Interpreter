@@ -225,6 +225,7 @@ def cbnz(args):
             s.ip = LBS[args[1]]
     return
 
+#tested
 def cmp(args):
     s.flags=[0]*4
     rN = int(args[0][1::])
@@ -235,6 +236,7 @@ def cmp(args):
         s.flags[0] = 1
     return
 
+#tested
 def cmpi(args):
     s.flags=[0]*4
     rT = int(args[0][1::])

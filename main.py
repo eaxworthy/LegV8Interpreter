@@ -33,6 +33,7 @@ functions = {
     'BR': f.br,
     'CBZ': f.cbz,
     'CBNZ': f.cbnz,
+    'CMP': f.cmp,
     'CMPI': f.cmpi,
     'EOR': f.eor,
     'EORI': f.eori,
@@ -76,7 +77,8 @@ LegCode = []
 with open("simple_test.txt", 'r') as file:
     lines = file.readlines()
     for line in lines:
-        LegCode.append(line.rstrip())
+        if line != '\n':
+            LegCode.append(line.rstrip())
 
 #First pass to collect labels. It then trims the label from the beginning of
 #the stored instruction so that we don't need to repeatedly check the beginning
