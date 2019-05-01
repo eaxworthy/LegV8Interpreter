@@ -26,7 +26,7 @@ def add(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    REG[rD].int = REG[rN].int + REG[rM].int
+    REG[rD].int = s64(REG[rN].int + REG[rM].int)
     return
 
 #tested
@@ -34,47 +34,48 @@ def addi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    REG[rD].int = REG[rN].int + iM
+    REG[rD].int = s64(REG[rN].int + s64(iM))
     return
 
+#tested
 def adds(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
+    flags = [0]*4
     REG[rD].int = s64(REG[rN].int + REG[rM].int)
-    #show stored result as int and hex
-    print(REG[rD].int, ' ', REG[rD])
     if not REG[rD].int:
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int != REG[rN].int + REG[rM].int):
+    if(REG[rD].uint < REG[rN].uint or REG[rD].uint < REG[rM].uint):
         flags[2] = 1
+    if (REG[rD].int != REG[rN].int + REG[rM].int):
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
     return
 
-
+#tested
 def addis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
-    REG[rD].int = s64(REG[rN].int + iM)
-    #show stored result as int and hex
-    print(REG[rD].int, ' ', REG[rD])
+    flags = [0]*4
+    REG[rD].int = s64(REG[rN].int + s64(iM))
     if not REG[rD].int:
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int != REG[rN].int + iM):
+    if(REG[rD].uint < REG[rN].uint or REG[rD] < s64(iM).uint):
         flags[2] = 1
+    if (REG[rD].int != REG[rN].int + iM):
         flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
     return
 
+#tested
 def aand(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -82,46 +83,42 @@ def aand(args):
     REG[rD].int = REG[rN].int & REG[rM].int
     return
 
+#tested
 def andi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    REG[rD].int = REG[rN].int & iM
+    REG[rD].int = s64(REG[rN].int & s64(iM))
     return
 
+#tested
 def ands(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
+    flags = [0]*4
     REG[rD].int = s64(REG[rN].int & REG[rM].int)
     #show stored result as int and hex
-    print(REG[rD].int, ' ', REG[rD])
     if not REG[rD].int:
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int < REG[rN].int & REG[rM].int):
-        flags[2] = 1
-        flags[3] = 1
-    #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
     return
 
+#tested
 def andis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
-    REG[rD].int = s64(REG[rN].int & iM)
+    flags = [0]*4
+    REG[rD].int = s64(REG[rN].int & s64(iM))
     #show stored result as int and hex
     print(REG[rD].int, ' ', REG[rD])
     if not REG[rD].int:
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int < REG[rN].int & iM):
-        flags[2] = 1
-        flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
     print(flags)
     return
@@ -313,39 +310,39 @@ def orri(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    REG[rD].int = REG[rN].int | iM
+    REG[rD].int = REG[rN].int | s64(iM)
     return
 
 def sub(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
-    REG[rD].int = REG[rN].int - REG[rM].int
+    REG[rD].int = s64(REG[rN].int - REG[rM].int)
     return
 
+#tested
 def subi(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    REG[rD].int = REG[rN].int - iM
+    REG[rD].int = s64(REG[rN].int - s64(iM))
     return
 
+#tested
 def subs(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     rM = int(args[2][1::])
+    flags = [0]*4
     REG[rD].int = s64(REG[rN].int - REG[rM].int)
-    #show stored result as int and hex
-    print(REG[rD].int, ' ', REG[rD])
     if not REG[rD].int:
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
+    if(REG[rN].uint < REG[rM].uint):
+            flags[2] = 1
     if (REG[rD].int != REG[rN].int - REG[rM].int):
-        flags[2] = 1
         flags[3] = 1
-    #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
-    print(flags)
     return
 
 #tested
@@ -353,18 +350,16 @@ def subis(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    REG[rD].int = s64(REG[rN].int - iM)
-    #show stored result as int and hex
-    print(REG[rD].int, ' ', REG[rN].int - iM)
+    flags = [0]*4
+    REG[rD].int = s64(REG[rN].int - s64(iM))
     if not REG[rD].int:
         flags[0] = 1
     if REG[rD].int < 0:
         flags[1] = 1
-    if (REG[rD].int != REG[rN].int - iM):
+    if(REG[rN].uint < iM):
         flags[2] = 1
+    if (REG[rD].int != REG[rN].int - s64(iM)):
         flags[3] = 1
-    #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
-    print(flags)
     return
 
 def stur(args):
