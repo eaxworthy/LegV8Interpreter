@@ -19,20 +19,21 @@ functions = {
     'ANDS': f.ands,
     'ANDIS': f.andis,
     'B': f.b,
-    'B.EQ': f.beq,
-    'B.NE': f.bne,
-    'B.LT': f.blt,
-    'B.LE': f.ble,
-    'B.GT': f.bgt,
-    'B.GE': f.bge,
-    'B.HS': f.bhs,
-    'B.LO': f.blo,
-    'B.LS': f.bls,
-    'B.HI': f.bhi,
+    'BEQ': f.beq,
+    'BNE': f.bne,
+    'BLT': f.blt,
+    'BLE': f.ble,
+    'BGT': f.bgt,
+    'BGE': f.bge,
+    'BHS': f.bhs,
+    'BLO': f.blo,
+    'BLS': f.bls,
+    'BHI': f.bhi,
     'BL': f.bl,
     'BR': f.br,
     'CBZ': f.cbz,
     'CBNZ': f.cbnz,
+    'CMPI': f.cmpi,
     'EOR': f.eor,
     'EORI': f.eori,
     'LDUR': f.ldur,
@@ -67,11 +68,13 @@ def load_memory():
         (s.MEM[int(values[i])]).int = temp
         print(s.MEM[int(values[i])])
 
-load_memory()
-
 LegCode = []
-with open("simple_test.txt", 'r') as f:
-    lines = f.readlines()
+#load_memory()
+
+
+#progFile = input("Enter name of program file: ")
+with open("simple_test.txt", 'r') as file:
+    lines = file.readlines()
     for line in lines:
         LegCode.append(line.rstrip())
 
@@ -82,17 +85,41 @@ for N in range(len(LegCode)):
     x = LegCode[N]
     x = re.sub(r'[^\w\s]','',x)
     ins_params = x.split()
-    print (ins_params[0])
     if ins_params[0] not in functions:
         s.LBS[ins_params[0]] = N
         LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
 
-for N in range(len(LegCode)):
-    x = LegCode[N]
-    x = re.sub(r'[^\w\s]','',x)
+while s.ip < len(LegCode):
+    runMode = input("Run(1) or Step(2): ")
+    if runMode == "1":
+        while s.ip < len(LegCode):
+            N = s.ip
+            x = LegCode[s.ip]
+            if x != "":
+                x = re.sub(r'[^\w\s]','',x)
+                ins_params = x.split()
+                functions[ins_params[0]](ins_params[1::])
+                f.setZero()
+                if N == s.ip:
+                    s.ip += 1
+            else:
+                s.ip += 1
+        break;
+    if runMode == "2":
+        N = s.ip
+        x = LegCode[s.ip]
+        if x != "":
+            x = re.sub(r'[^\w\s]','',x)
+            ins_params = x.split()
+            print("Doing Instruction: ", x)
+            functions[ins_params[0]](ins_params[1::])
+            f.setZero()
+            if N == s.ip:
+                s.ip += 1
+            doPrint = input("Print Registers Y(1) / N(2): ")
+            if doPrint == "1":
+                s.printRegs()
+        else:
+            s.ip += 1
 
-    ins_params = x.split()
-    #prints for tracing basic program
-    print("Doing Instruction: ", ins_params[0], '\n')
-    functions[ins_params[0]](ins_params[1::])
-    s.printRegs()
+s.printRegs()
