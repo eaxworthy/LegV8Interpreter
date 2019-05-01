@@ -225,8 +225,17 @@ def cbnz(args):
             s.ip = LBS[args[1]]
     return
 
+def cmp(args):
+    s.flags=[0]*4
+    rN = int(args[0][1::])
+    rM = int(args[1][1::])
+    if REG[rN].int < REG[rM].int:
+        s.flags[1] = 1
+    if  REG[rN].int == REG[rM].int:
+        s.flags[0] = 1
+    return
+
 def cmpi(args):
-    print(args)
     s.flags=[0]*4
     rT = int(args[0][1::])
     iM = s64(int(args[1]))
