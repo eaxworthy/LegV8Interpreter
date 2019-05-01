@@ -98,7 +98,6 @@ def ands(args):
     rM = int(args[2][1::])
     s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int & REG[rM].int)
-    #show stored result as int and hex
     if not REG[rD].int:
         s.flags[0] = 1
     if REG[rD].int < 0:
@@ -205,12 +204,9 @@ def bl(args):
     return
 
 #tested
-#Due to the way ip is incremented, if REG[rD] hold the address of the Instruction
-#we want to execute immediately after br, we need to decrement it by 1, because
-#when we actually call the next instruction, ip will have been inc'd by 1
 def br(args):
     rD = int(args[0][1::])
-    s.ip = REG[rD].int - 1
+    s.ip = REG[rD].int
     return
 
 #tested
@@ -231,10 +227,13 @@ def cbnz(args):
 
 def cmpi(args):
     print(args)
+    s.flags=[0]*4
     rT = int(args[0][1::])
-    if REG[rT].int == int(args[1]):
-        if args[1] in LBS:
-            s.ip = LBS[args[1]]
+    iM = s64(int(args[1]))
+    if REG[rT].int < iM:
+        s.flags[1] = 1
+    if REG[rT].int == iM:
+        s.flags[0] = 1
     return
 
 def eor(args):

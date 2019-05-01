@@ -89,6 +89,7 @@ for N in range(len(LegCode)):
         s.LBS[ins_params[0]] = N
         LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
 
+
 while s.ip < len(LegCode):
     runMode = input("Run(1) or Step(2): ")
     if runMode == "1":

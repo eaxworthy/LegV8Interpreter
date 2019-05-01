@@ -1,3 +1,3 @@
-ADDI X30, X31, #2
-ADDI X31, X31, #0
-BR X30
+
+CMPI x0, #5
+DONE:
