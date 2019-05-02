@@ -247,6 +247,7 @@ def cmpi(args):
         s.flags[0] = 1
     return
 
+#tested
 def eor(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -254,6 +255,7 @@ def eor(args):
     REG[rD].int = REG[rN].int ^ REG[rM].int
     return
 
+#tested
 def eori(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -261,21 +263,20 @@ def eori(args):
     REG[rD].int = REG[rN].int ^ iM
     return
 
+#tested
 def ldur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
-    REG[rT].int = mem[s64(REG[rN].int + iM)]
-
+    if REG[rN].int + s64(iM) < 1000:
+        REG[rT].int = MEM[REG[rN].int + s64(iM)].int
     return
 
 def ldurb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
-    REG[rT].int = get_byte(mem[s64(REG[rN].int + iM)], 0)
+    REG[rT].int = get_byte(MEM[s64(REG[rN].int + iM)], 0)
 
     return
 
@@ -283,17 +284,14 @@ def ldurh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
-
-    REG[rT].int = get_byte(mem[s64(REG[rN].int + iM)], 1)
+    REG[rT].int = get_byte(MEM[s64(REG[rN].int + iM)], 1)
     return
 
 def ldursw(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
-    REG[rT].int = s64(get_byte(mem[s64(REG[rN].int + iM)], 2))
+    REG[rT].int = s64(get_byte(MEM[s64(REG[rN].int + iM)], 2))
     return
 
 def ldxr(args):
@@ -301,10 +299,11 @@ def ldxr(args):
     rN = int(args[1][1::])
     iM = int(args[2])
 
-    REG[rT].int = mem[s64(REG[rN].int + iM)]
+    REG[rT].int = MEM[s64(REG[rN].int + iM)]
     REG[9] = 1
     return
 
+#tested
 def lsl(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -312,6 +311,7 @@ def lsl(args):
     REG[rD].int = REG[rN].int << iM
     return
 
+#tested
 def lsr(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -319,6 +319,13 @@ def lsr(args):
     REG[rD].int = REG[rN].int >> iM
     return
 
+def movz(args):
+    return
+
+def movk(args):
+    return
+
+#tested
 def orr(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -326,6 +333,7 @@ def orr(args):
     REG[rD].int = REG[rN].int | REG[rM].int
     return
 
+#tested
 def orri(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -333,6 +341,7 @@ def orri(args):
     REG[rD].int = REG[rN].int | s64(iM)
     return
 
+#tested
 def sub(args):
     rD = int(args[0][1::])
     rN = int(args[1][1::])
@@ -393,52 +402,48 @@ def stur(args):
     if rN == 28:
         STK[REG[rN].int + iM].int = REG[rT].int
     else:
-        mem[REG[rN].int + iM].int = REG[rT].int
+        MEM[REG[rN].int + iM].int = REG[rT].int
+        print(MEM[REG[rN]].int)
     return
 
 def sturb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
     if rN == 28:
         STK[REG[rN].int + iM] = get_byte(REG[rT].int, 0)
     else:
-        mem[REG[rN].int + iM]= get_byte(REG[rT].int, 0)
-
+        MEM[REG[rN].int + iM]= get_byte(REG[rT].int, 0)
     return
 
 def sturh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
     if rN == 28:
         STK[REG[rN].int + iM] = get_byte(REG[rT].int, 1)
     else:
-        mem[REG[rN].int + iM]= get_byte(REG[rT].int, 1)
+        MEM[REG[rN].int + iM]= get_byte(REG[rT].int, 1)
     return
 
 def sturw(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-
     if rN == 28:
         STK[REG[rN].int + iM] = get_byte(REG[rT].int, 2)
     else:
-        mem[REG[rN].int + iM]= get_byte(REG[rT].int, 2)
+        MEM[REG[rN].int + iM]= get_byte(REG[rT].int, 2)
     return
 
 def stxr(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
-
     if not REG[9]:
         if rN == 28:
             STK[REG[rN].int] = rT
         else:
-            mem[REG[rN].int]= REG[rT].int
+            MEM[REG[rN].int]= REG[rT].int
     return
 
 def setZero():

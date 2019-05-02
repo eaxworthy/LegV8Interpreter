@@ -1,6 +1,2 @@
-ADDI x0, x0, #1
-ADDI x1, x1, #5
-CMP x0, x1
-B.EQ DONE
-ADDI x3, x3, #2
-DONE:
+ADDI x30, x30, #15
+STUR x30, [x0, #0]

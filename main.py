@@ -37,6 +37,8 @@ functions = {
     'CMPI': f.cmpi,
     'EOR': f.eor,
     'EORI': f.eori,
+    'MOVZ': f.movz,
+    'MOVK':f.movk,
     'LDUR': f.ldur,
     'LDURB': f.ldurb,
     'LDURH': f.ldurh,
@@ -67,10 +69,10 @@ def load_memory():
         temp = values[i+1]
         temp = f.s64(int(temp, 0))
         (s.MEM[int(values[i])]).int = temp
-        print(s.MEM[int(values[i])])
+        #print(s.MEM[int(values[i])])
 
 LegCode = []
-#load_memory()
+load_memory()
 
 
 #progFile = input("Enter name of program file: ")
