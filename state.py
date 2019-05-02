@@ -35,13 +35,13 @@ def printStack():
     print ("\n=================================================\nPrinting Stack:\n=================================================")
     for i in range(999, -1, -1):
         if STK[i].int != 0:
-            print('{:<30}{:<40}'.format(str("STK%d:" % i), str(STK[i])))
+            print('{:<30}{:<40}'.format(str("STK[%d]:" % i), str(STK[i])))
 
 def printMem():
     print ("\n=================================================\nPrinting Memory:\n=================================================")
     for i in range(999, -1, -1):
         if MEM[i].int != 0:
-            print('{:<30}{:<40}'.format(str("MEM%d:" % i), str(MEM[i])))
+            print('{:<30}{:<40}'.format(str("MEM[%d]:" % i), str(MEM[i])))
 
 def printLabels():
     print ("\n=================================================\nPrinting Labels:\n=================================================")
@@ -50,4 +50,12 @@ def printLabels():
 def printFlags():
     print ("\n=================================================\nPrinting Flags:\n=================================================")
     for i in range(4):
-        print(flags[i], i)    
+        if i == 0:
+            _flag = "Zero"
+        elif i == 1:
+            _flag = "Negative"
+        elif i == 2:
+            _flag = "Carry"
+        elif i == 3:
+            _flag = "Overflow"
+        print('{:<30}{:<40}'.format(_flag, str(flags[i])))
