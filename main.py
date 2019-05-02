@@ -121,10 +121,15 @@ while s.ip < len(LegCode):
             f.setZero()
             if N == s.ip:
                 s.ip += 1
-            doPrint = input("Print Registers Y(1) / N(2): ")
+            if s.ip < len(LegCode)-1:
+                doPrint = input("Print Registers Y(1) / N(2): ")
             if doPrint == "1":
                 s.printRegs()
         else:
             s.ip += 1
 
+print ("\nEnd of Legv8 Code:")
 s.printRegs()
+s.printStack()
+s.printMem()
+s.printFlags()

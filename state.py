@@ -27,17 +27,27 @@ for count in range(1000):
     STK.append(x)
 
 def printRegs():
+    print ("\n=================================================\nPrinting Registers:\n=================================================")
     for i in range(32):
-        print("X", i, ": ", REG[i])
+        print('{:<30}{:<40}'.format(str("X%d:" % i), str(REG[i])))
 
 def printStack():
-    for i in range(999, 700, -1):
+    print ("\n=================================================\nPrinting Stack:\n=================================================")
+    for i in range(999, -1, -1):
         if STK[i].int != 0:
-            print("S", i, ": ", STK[i])
+            print('{:<30}{:<40}'.format(str("STK%d:" % i), str(STK[i])))
+
+def printMem():
+    print ("\n=================================================\nPrinting Memory:\n=================================================")
+    for i in range(999, -1, -1):
+        if MEM[i].int != 0:
+            print('{:<30}{:<40}'.format(str("MEM%d:" % i), str(MEM[i])))
 
 def printLabels():
+    print ("\n=================================================\nPrinting Labels:\n=================================================")
     print(LBS.items())
 
 def printFlags():
+    print ("\n=================================================\nPrinting Flags:\n=================================================")
     for i in range(4):
         print(flags[i], i)    

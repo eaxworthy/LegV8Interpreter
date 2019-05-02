@@ -20,8 +20,7 @@ def get_byte(value, n):
     # extract k bit sub-string
     byte = binary[start: end + 1]
 
-    # convert extracted sub-string into decimal again
-    return s.b.BitArray(int=int(byte, 2), length=64)
+    return s.b.BitArray(int = int(byte, 2), length=64)
 
 #Takes a uint and returns a int64. If the original value would
 #require more than 64 bits, MSBs will be dropped until result
@@ -277,7 +276,7 @@ def ldur(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     if REG[rN].int + s64(iM) < 1000:
-        REG[rT].int = MEM[REG[rN].int + s64(iM)].int
+        REG[rT] = MEM[REG[rN].int + s64(iM)].int
     return
 
 def ldurb(args):
@@ -285,7 +284,7 @@ def ldurb(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     if REG[rN].int + s64(iM) < 1000:
-        REG[rT].int = get_byte(MEM[REG[rN].int + s64(iM)].int, 8)
+        REG[rT] = get_byte(MEM[REG[rN].int + s64(iM)].int, 8)
 
     return
 
@@ -293,10 +292,8 @@ def ldurh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    print (REG[rN].int, iM, rT, REG[rN].int + s64(iM))
-    print (get_byte(MEM[REG[rN].int + s64(iM)].int, 1))
     if REG[rN].int + s64(iM) < 1000:
-        REG[rT].int = get_byte(MEM[REG[rN].int + s64(iM)].int, 16)
+        REG[rT] = get_byte(MEM[REG[rN].int + s64(iM)].int, 16)
     return
 
 def ldursw(args):
@@ -304,7 +301,7 @@ def ldursw(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     if REG[rN].int + s64(iM) < 1000:
-        REG[rT].int = get_byte(MEM[REG[rN].int + s64(iM)].int, 24)
+        REG[rT] = get_byte(MEM[REG[rN].int + s64(iM)].int, 24)
     return
 
 def ldxr(args):
@@ -313,7 +310,7 @@ def ldxr(args):
     iM = int(args[2])
 
     if REG[rN].int + s64(iM) < 1000:
-        REG[rT].int = MEM[REG[rN].int + s64(iM)]
+        REG[rT] = MEM[REG[rN].int + s64(iM)]
         REG[9] = 1
     return
 
@@ -422,13 +419,11 @@ def sturb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    print (REG[rN].int + s64(iM))
     if REG[rN].int + s64(iM) < 1000:
         if rN == 28:
             STK[REG[rN].int + s64(iM)] = get_byte(REG[rT].int, 8)
         else:
             MEM[REG[rN].int + s64(iM)]= get_byte(REG[rT].int, 8)
-            print (MEM[REG[rN].int + s64(iM)])
     return
 
 def sturh(args):
