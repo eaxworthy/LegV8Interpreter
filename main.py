@@ -71,80 +71,83 @@ def load_memory():
         (s.MEM[int(values[i])]).int = temp
         #print(s.MEM[int(values[i])])
 
-LegCode = []
-load_memory()
+        
+if __name__ == '__main__':
+    
+    LegCode = []
+    load_memory()
 
 
-#progFile = input("Enter name of program file: ")
-with open("simple_test.txt", 'r') as file:
-    lines = file.readlines()
-    for line in lines:
-        if line != '\n':
-            LegCode.append(line.rstrip())
+    #progFile = input("Enter name of program file: ")
+    with open("simple_test.txt", 'r') as file:
+        lines = file.readlines()
+        for line in lines:
+            if line != '\n':
+                LegCode.append(line.rstrip())
 
-#First pass to collect labels. It then trims the label from the beginning of
-#the stored instruction so that we don't need to repeatedly check the beginning
-#of each lines when we enter the execution phase.
-for N in range(len(LegCode)):
-    x = LegCode[N]
-    x = re.sub(r'[^\w\s]','',x)
-    ins_params = x.split()
-    if ins_params[0] not in functions:
-        s.LBS[ins_params[0]] = N
-        LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
+    #First pass to collect labels. It then trims the label from the beginning of
+    #the stored instruction so that we don't need to repeatedly check the beginning
+    #of each lines when we enter the execution phase.
+    for N in range(len(LegCode)):
+        x = LegCode[N]
+        x = re.sub(r'[^\w\s]','',x)
+        ins_params = x.split()
+        if ins_params[0] not in functions:
+            s.LBS[ins_params[0]] = N
+            LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
 
 
-while s.ip < len(LegCode):
-    print ("\n{:=>49}".format(""))
-    runMode = input("(1) Run\n(2) Step\nChoice: ")
-    print ("{:=>49}".format(""))
-    if runMode == "1":
-        while s.ip < len(LegCode):
+    while s.ip < len(LegCode):
+        print ("\n{:=>49}".format(""))
+        runMode = input("(1) Run\n(2) Step\nChoice: ")
+        print ("{:=>49}".format(""))
+        if runMode == "1":
+            while s.ip < len(LegCode):
+                N = s.ip
+                x = LegCode[s.ip]
+                if x != "":
+                    x = re.sub(r'[^\w\s]','',x)
+                    ins_params = x.split()
+                    functions[ins_params[0]](ins_params[1::])
+                    f.setZero()
+                    if N == s.ip:
+                        s.ip += 1
+                else:
+                    s.ip += 1
+            break;
+        if runMode == "2":
             N = s.ip
             x = LegCode[s.ip]
             if x != "":
                 x = re.sub(r'[^\w\s]','',x)
                 ins_params = x.split()
+                print("Doing Instruction: ", x)
                 functions[ins_params[0]](ins_params[1::])
                 f.setZero()
                 if N == s.ip:
                     s.ip += 1
+                if s.ip < len(LegCode)-1:
+                    print ("\n{:=>49}".format(""), "\nPrinting Options:", "\n{:=>49}".format(""))
+                    doPrint = input("\n(1) Print Registers\n(2) Print Stack\n(3) Print Memory\n"
+                                    "(4) Print Flags\n(5) Print All\n(6) Continue\nChoice: ")
+                    print ("\n{:=>49}".format(""))
+                    if doPrint == "1":
+                        s.printRegs()
+                    elif doPrint == "2":
+                        s.printStack()
+                    elif doPrint == "3":
+                        s.printMem()
+                    elif doPrint == "4":
+                        s.printFlags()
+                    elif doPrint == "5":
+                        s.printRegs()
+                        s.printStack()
+                        s.printMem()
+                        s.printFlags()
             else:
                 s.ip += 1
-        break;
-    if runMode == "2":
-        N = s.ip
-        x = LegCode[s.ip]
-        if x != "":
-            x = re.sub(r'[^\w\s]','',x)
-            ins_params = x.split()
-            print("Doing Instruction: ", x)
-            functions[ins_params[0]](ins_params[1::])
-            f.setZero()
-            if N == s.ip:
-                s.ip += 1
-            if s.ip < len(LegCode)-1:
-                print ("\n{:=>49}".format(""), "\nPrinting Options:", "\n{:=>49}".format(""))
-                doPrint = input("\n(1) Print Registers\n(2) Print Stack\n(3) Print Memory\n"
-                                "(4) Print Flags\n(5) Print All\n(6) Continue\nChoice: ")
-                print ("\n{:=>49}".format(""))
-                if doPrint == "1":
-                    s.printRegs()
-                elif doPrint == "2":
-                    s.printStack()
-                elif doPrint == "3":
-                    s.printMem()
-                elif doPrint == "4":
-                    s.printFlags()
-                elif doPrint == "5":
-                    s.printRegs()
-                    s.printStack()
-                    s.printMem()
-                    s.printFlags()
-        else:
-            s.ip += 1
-print("\n{:*>49}".format(""),"\nEnd of Legv8 Code:", "\n{:*>49}".format(""))
-s.printRegs()
-s.printStack()
-s.printMem()
-s.printFlags()
+    print("\n{:*>49}".format(""),"\nEnd of Legv8 Code:", "\n{:*>49}".format(""))
+    s.printRegs()
+    s.printStack()
+    s.printMem()
+    s.printFlags()
