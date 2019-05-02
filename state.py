@@ -27,28 +27,41 @@ for count in range(1000):
     STK.append(x)
 
 def printRegs():
-    print ("\n=================================================\nPrinting Registers:\n=================================================")
+    print ( "\n{:=>49}".format("") ,"\nPrinting Registers:", "\n{:=>49}".format(""))
     for i in range(32):
         print('{:<30}{:<40}'.format(str("X%d:" % i), str(REG[i])))
+    print ("\n{:=>49}".format(""))
 
 def printStack():
-    print ("\n=================================================\nPrinting Stack:\n=================================================")
+    print ("\n{:=>49}".format("") ,"\nPrinting Stack:", "\n{:=>49}".format(""))
+    counter = 0
     for i in range(999, -1, -1):
         if STK[i].int != 0:
             print('{:<30}{:<40}'.format(str("STK[%d]:" % i), str(STK[i])))
+            counter += 1
+    if not counter:
+        print ("Stack is empty")
+    print ("\n{:=>49}".format(""))
+
 
 def printMem():
-    print ("\n=================================================\nPrinting Memory:\n=================================================")
+    print ("\n{:=>49}".format(""), "\nPrinting Memory:", "\n{:=>49}".format(""))
+    counter = 0
     for i in range(999, -1, -1):
         if MEM[i].int != 0:
             print('{:<30}{:<40}'.format(str("MEM[%d]:" % i), str(MEM[i])))
+            counter += 1
+    if not counter:
+        print ("Memory is empty")
+    print ("\n{:=>49}".format(""))
+
 
 def printLabels():
-    print ("\n=================================================\nPrinting Labels:\n=================================================")
+    print ("\n{:=>49}".format(""), "\nPrinting Labels:", "\n{:=>49}".format(""))
     print(LBS.items())
 
 def printFlags():
-    print ("\n=================================================\nPrinting Flags:\n=================================================")
+    print ("\n{:=>49}".format(""), "\nPrinting Flags:", "\n{:=>49}".format(""))
     for i in range(4):
         if i == 0:
             _flag = "Zero"
@@ -59,3 +72,5 @@ def printFlags():
         elif i == 3:
             _flag = "Overflow"
         print('{:<30}{:<40}'.format(_flag, str(flags[i])))
+    print ("\n{:=>49}".format(""))
+

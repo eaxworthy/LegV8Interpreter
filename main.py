@@ -95,7 +95,9 @@ for N in range(len(LegCode)):
 
 
 while s.ip < len(LegCode):
-    runMode = input("Run(1) or Step(2): ")
+    print ("\n{:=>49}".format(""))
+    runMode = input("(1) Run\n(2) Step\nChoice: ")
+    print ("{:=>49}".format(""))
     if runMode == "1":
         while s.ip < len(LegCode):
             N = s.ip
@@ -122,13 +124,26 @@ while s.ip < len(LegCode):
             if N == s.ip:
                 s.ip += 1
             if s.ip < len(LegCode)-1:
-                doPrint = input("Print Registers Y(1) / N(2): ")
-            if doPrint == "1":
-                s.printRegs()
+                print ("\n{:=>49}".format(""), "\nPrinting Options:", "\n{:=>49}".format(""))
+                doPrint = input("\n(1) Print Registers\n(2) Print Stack\n(3) Print Memory\n"
+                                "(4) Print Flags\n(5) Print All\n(6) Continue\nChoice: ")
+                print ("\n{:=>49}".format(""))
+                if doPrint == "1":
+                    s.printRegs()
+                elif doPrint == "2":
+                    s.printStack()
+                elif doPrint == "3":
+                    s.printMem()
+                elif doPrint == "4":
+                    s.printFlags()
+                elif doPrint == "5":
+                    s.printRegs()
+                    s.printStack()
+                    s.printMem()
+                    s.printFlags()
         else:
             s.ip += 1
-
-print ("\nEnd of Legv8 Code:")
+print("\n{:*>49}".format(""),"\nEnd of Legv8 Code:", "\n{:*>49}".format(""))
 s.printRegs()
 s.printStack()
 s.printMem()
