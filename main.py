@@ -66,18 +66,26 @@ def load_memory():
         #bitstrings don't pad with leading 0's, so to keep 64bit size limit,
         #we need to translate anygiven hex into a signed int. If number is
         #above limit, the msb's will be chopped off
-        temp = values[i+1]
-        temp = f.s64(int(temp, 0))
-        (s.MEM[int(values[i])]).int = temp
-        #print(s.MEM[int(values[i])])
-
-        
-if __name__ == '__main__':
+        temp = b.BitArray(int = 0, length = 64)
+        temp.int = f.s64(int(values[i+1], 0))
+        index = int(values[i])
+        j = index
+        for byte in temp.cut(8):
+            s.MEM[j] = byte
+            j += 1
+    choice = input("See loaded memory values? Y(1) N(2): ")
+    if choice == "1":
+        s.printMem()
     
+
+
+if __name__ == '__main__':
+
     LegCode = []
     load_memory()
 
 
+    '''
     #progFile = input("Enter name of program file: ")
     with open("simple_test.txt", 'r') as file:
         lines = file.readlines()
@@ -151,3 +159,4 @@ if __name__ == '__main__':
     s.printStack()
     s.printMem()
     s.printFlags()
+'''

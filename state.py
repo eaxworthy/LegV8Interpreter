@@ -41,7 +41,8 @@ def printStack():
             counter += 1
     if not counter:
         print ("Stack is empty")
-    print ("\n{:=>49}".format(""))
+    print("(\nBytes not shown hold 0x00)")
+    print ("{:=>49}".format(""))
 
 
 def printMem():
@@ -53,7 +54,8 @@ def printMem():
             counter += 1
     if not counter:
         print ("Memory is empty")
-    print ("\n{:=>49}".format(""))
+    print("(\nBytes not shown hold 0x00)")
+    print ("{:=>49}".format(""))
 
 
 def printLabels():
@@ -73,4 +75,3 @@ def printFlags():
             _flag = "Overflow"
         print('{:<30}{:<40}'.format(_flag, str(flags[i])))
     print ("\n{:=>49}".format(""))
-
