@@ -76,7 +76,9 @@ def load_memory():
         for byte in temp.cut(8):
             s.MEM[j] = byte
             j += 1
+    print ("\n{:=>49}".format(""))
     choice = input("See loaded memory values? Y(1) N(2): ")
+    print ("\n{:=>49}".format(""))
     if choice == "1":
         s.printMem()
 
@@ -157,6 +159,6 @@ if __name__ == '__main__':
 
     print("\n{:*>49}".format(""),"\nEnd of Legv8 Code:", "\n{:*>49}".format(""))
     s.printRegs()
-#    s.printStack()
+    s.printStack()
     s.printMem()
-#    s.printFlags()
+    s.printFlags()
