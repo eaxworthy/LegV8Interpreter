@@ -1,5 +1,6 @@
 from state import REG, STK, LBS, MEM, printLabels
 import state as s
+import bitstring as b
 
 rM = 0
 rN = 0
@@ -275,10 +276,14 @@ def ldur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    if REG[rN].int + s64(iM) < 991:
+    index = REG[rN].int + s64(iM)
+    #reset rT to 0
+    print(type(REG[rT]))
+    REG[rT].clear()
+    if  index < 991:
         # cascade up -> go from 1 byte in mem to 8 bytes in reg
         for i in range(8):
-            REG[rT] = MEM[REG[rN].int + s64(iM) + i].int << (64 - 8 * (i + 1))
+            REG[rT].insert(MEM[index+i], i*8)
     return
 
 def ldurb(args):
