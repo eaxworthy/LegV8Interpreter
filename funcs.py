@@ -276,7 +276,9 @@ def ldur(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     if REG[rN].int + s64(iM) < 1000:
-        REG[rT] = MEM[REG[rN].int + s64(iM)].int
+        # cascade up -> go from 1 byte in mem to 8 bytes in reg
+        for i in range(8):
+            REG[rT] = MEM[REG[rN].int + s64(iM) + i].int << (64 - 8 * (i + 1))
     return
 
 def ldurb(args):
@@ -284,6 +286,7 @@ def ldurb(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     if REG[rN].int + s64(iM) < 1000:
+        # extend the new result mem to 64 from 8
         REG[rT] = get_byte(MEM[REG[rN].int + s64(iM)].int, 8)
 
     return
@@ -331,9 +334,17 @@ def lsr(args):
     return
 
 def movz(args):
+    rD = int(args[0][1::])
+    iM = int(args[1])
+    MiM = int(args[3])
+    REG[rD] = (iM << MiM)
     return
 
 def movk(args):
+    rD = int(args[0][1::])
+    iM = int(args[1])
+    MiM = int(args[3])
+    REG[rD] = (iM << MiM) | iM
     return
 
 #tested

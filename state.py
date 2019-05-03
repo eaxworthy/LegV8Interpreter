@@ -18,12 +18,12 @@ REG[28].int = 999
 
 #initialize memory
 for count in range(1000):
-    x = b.BitArray(int = 0, length = 64)
+    x = b.BitArray(int = 0, length = 8)
     MEM.append(x)
 
 #initialize stack
 for count in range(1000):
-    x = b.BitArray(int = 0, length = 64)
+    x = b.BitArray(int = 0, length = 8)
     STK.append(x)
 
 def printRegs():
@@ -35,7 +35,7 @@ def printRegs():
 def printStack():
     print ("\n{:=>49}".format("") ,"\nPrinting Stack:", "\n{:=>49}".format(""))
     counter = 0
-    for i in range(999, -1, -1):
+    for i in range(len(STK)-1, -1, -1):
         if STK[i].int != 0:
             print('{:<30}{:<40}'.format(str("STK[%d]:" % i), str(STK[i])))
             counter += 1
@@ -47,7 +47,7 @@ def printStack():
 def printMem():
     print ("\n{:=>49}".format(""), "\nPrinting Memory:", "\n{:=>49}".format(""))
     counter = 0
-    for i in range(999, -1, -1):
+    for i in range(len(MEM)-1, -1, -1):
         if MEM[i].int != 0:
             print('{:<30}{:<40}'.format(str("MEM[%d]:" % i), str(MEM[i])))
             counter += 1
