@@ -281,9 +281,12 @@ def ldur(args):
     print(type(REG[rT]))
     REG[rT].clear()
     if  index < 991:
-        # cascade up -> go from 1 byte in mem to 8 bytes in reg
-        for i in range(8):
-            REG[rT].insert(MEM[index+i], i*8)
+        if rT == 28:
+            for i in range(8):
+                REG[rT].insert(STK[index+i], i*8)
+        else:
+            for i in range(8):
+                REG[rT].insert(MEM[index+i], i*8)
     return
 
 def ldurb(args):
