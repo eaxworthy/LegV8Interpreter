@@ -445,11 +445,15 @@ def sturb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    if REG[rN].int + s64(iM) < 1000:
+    index = REG[rN].int + s64(iM)
+    print(REG[rT].int)
+    byte = REG[rT][56:64]
+    print("Bytetype ", (byte))
+    if index < 991:
         if rN == 28:
-            STK[REG[rN].int + s64(iM)] = get_byte(REG[rT].int, 8)
+            STK[index].int = byte.int
         else:
-            MEM[REG[rN].int + s64(iM)]= get_byte(REG[rT].int, 8)
+            MEM[index].int = byte.int
     return
 
 def sturh(args):
