@@ -393,6 +393,7 @@ def subis(args):
         s.flags[3] = 1
     return
 
+#tested
 def stur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
