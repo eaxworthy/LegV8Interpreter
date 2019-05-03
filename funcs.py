@@ -424,7 +424,9 @@ def stur(args):
     print(j)
     if j < 991:
         if rN == 28:
-            STK[REG[rN].int + s64(iM)].int = REG[rT].int
+            for byte in REG[rT].cut(8):
+                STK[j] = byte
+                j += 1
         else:
             for byte in REG[rT].cut(8):
                 MEM[j] = byte
