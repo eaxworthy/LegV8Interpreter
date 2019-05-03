@@ -18,26 +18,59 @@ REG[28].int = 999
 
 #initialize memory
 for count in range(1000):
-    x = b.BitArray(int = 0, length = 64)
+    x = b.BitArray(int = 0, length = 8)
     MEM.append(x)
 
 #initialize stack
 for count in range(1000):
-    x = b.BitArray(int = 0, length = 64)
+    x = b.BitArray(int = 0, length = 8)
     STK.append(x)
 
 def printRegs():
+    print ( "\n{:=>49}".format("") ,"\nPrinting Registers:", "\n{:=>49}".format(""))
     for i in range(32):
-        print("X", i, ": ", REG[i])
+        print('{:<30}{:<40}'.format(str("X%d:" % i), str(REG[i])))
+    print ("\n{:=>49}".format(""))
 
 def printStack():
-    for i in range(999, 700, -1):
+    print ("\n{:=>49}".format("") ,"\nPrinting Stack:", "\n{:=>49}".format(""))
+    counter = 0
+    for i in range(len(STK)-1, -1, -1):
         if STK[i].int != 0:
-            print("S", i, ": ", STK[i])
+            print('{:<30}{:<40}'.format(str("STK[%d]:" % i), str(STK[i])))
+            counter += 1
+    if not counter:
+        print ("Stack is empty")
+    print ("\n{:=>49}".format(""))
+
+
+def printMem():
+    print ("\n{:=>49}".format(""), "\nPrinting Memory:", "\n{:=>49}".format(""))
+    counter = 0
+    for i in range(len(MEM)-1, -1, -1):
+        if MEM[i].int != 0:
+            print('{:<30}{:<40}'.format(str("MEM[%d]:" % i), str(MEM[i])))
+            counter += 1
+    if not counter:
+        print ("Memory is empty")
+    print ("\n{:=>49}".format(""))
+
 
 def printLabels():
+    print ("\n{:=>49}".format(""), "\nPrinting Labels:", "\n{:=>49}".format(""))
     print(LBS.items())
 
 def printFlags():
+    print ("\n{:=>49}".format(""), "\nPrinting Flags:", "\n{:=>49}".format(""))
     for i in range(4):
-        print(flags[i], i)    
+        if i == 0:
+            _flag = "Zero"
+        elif i == 1:
+            _flag = "Negative"
+        elif i == 2:
+            _flag = "Carry"
+        elif i == 3:
+            _flag = "Overflow"
+        print('{:<30}{:<40}'.format(_flag, str(flags[i])))
+    print ("\n{:=>49}".format(""))
+
