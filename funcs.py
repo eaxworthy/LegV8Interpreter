@@ -275,7 +275,7 @@ def ldur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    if REG[rN].int + s64(iM) < 1000:
+    if REG[rN].int + s64(iM) < 991:
         # cascade up -> go from 1 byte in mem to 8 bytes in reg
         for i in range(8):
             REG[rT] = MEM[REG[rN].int + s64(iM) + i].int << (64 - 8 * (i + 1))
@@ -420,11 +420,15 @@ def stur(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    if REG[rN].int + s64(iM) < 1000:
+    j = REG[rN].int + s64(iM)
+    print(j)
+    if j < 991:
         if rN == 28:
             STK[REG[rN].int + s64(iM)].int = REG[rT].int
         else:
-            MEM[REG[rN].int + s64(iM)].int = REG[rT].int
+            for byte in REG[rT].cut(8):
+                MEM[j] = byte
+                j += 1
     return
 
 def sturb(args):

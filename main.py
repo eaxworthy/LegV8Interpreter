@@ -69,6 +69,9 @@ def load_memory():
         temp = b.BitArray(int = 0, length = 64)
         temp.int = f.s64(int(values[i+1], 0))
         index = int(values[i])
+        if index > 991:
+            print("You are attempting to write outside of alloted memory.\nLast allowed index is 991.\n")
+            exit(1)
         j = index
         for byte in temp.cut(8):
             s.MEM[j] = byte
@@ -76,16 +79,31 @@ def load_memory():
     choice = input("See loaded memory values? Y(1) N(2): ")
     if choice == "1":
         s.printMem()
-    
 
+def printValues():
+    print ("\n{:=>49}".format(""), "\nPrinting Options:", "\n{:=>49}".format(""))
+    doPrint = input("\n(1) Print Registers\n(2) Print Stack\n(3) Print Memory\n"
+                    "(4) Print Flags\n(5) Print All\n(6) Continue\nChoice: ")
+    print ("\n{:=>49}".format(""))
+    if doPrint == "1":
+        s.printRegs()
+    elif doPrint == "2":
+        s.printStack()
+    elif doPrint == "3":
+        s.printMem()
+    elif doPrint == "4":
+        s.printFlags()
+    elif doPrint == "5":
+        s.printRegs()
+        s.printStack()
+        s.printMem()
+        s.printFlags()
 
 if __name__ == '__main__':
 
     LegCode = []
     load_memory()
 
-
-    '''
     #progFile = input("Enter name of program file: ")
     with open("simple_test.txt", 'r') as file:
         lines = file.readlines()
@@ -132,31 +150,13 @@ if __name__ == '__main__':
                 print("Doing Instruction: ", x)
                 functions[ins_params[0]](ins_params[1::])
                 f.setZero()
+                printValues()
                 if N == s.ip:
                     s.ip += 1
-                if s.ip < len(LegCode)-1:
-                    print ("\n{:=>49}".format(""), "\nPrinting Options:", "\n{:=>49}".format(""))
-                    doPrint = input("\n(1) Print Registers\n(2) Print Stack\n(3) Print Memory\n"
-                                    "(4) Print Flags\n(5) Print All\n(6) Continue\nChoice: ")
-                    print ("\n{:=>49}".format(""))
-                    if doPrint == "1":
-                        s.printRegs()
-                    elif doPrint == "2":
-                        s.printStack()
-                    elif doPrint == "3":
-                        s.printMem()
-                    elif doPrint == "4":
-                        s.printFlags()
-                    elif doPrint == "5":
-                        s.printRegs()
-                        s.printStack()
-                        s.printMem()
-                        s.printFlags()
-            else:
-                s.ip += 1
+
+
     print("\n{:*>49}".format(""),"\nEnd of Legv8 Code:", "\n{:*>49}".format(""))
     s.printRegs()
-    s.printStack()
+#    s.printStack()
     s.printMem()
-    s.printFlags()
-'''
+#    s.printFlags()

@@ -41,7 +41,7 @@ def printStack():
             counter += 1
     if not counter:
         print ("Stack is empty")
-    print("(\nBytes not shown hold 0x00)")
+    print("\n(Bytes not shown hold 0x00)")
     print ("{:=>49}".format(""))
 
 
@@ -54,7 +54,7 @@ def printMem():
             counter += 1
     if not counter:
         print ("Memory is empty")
-    print("(\nBytes not shown hold 0x00)")
+    print("\n(Bytes not shown hold 0x00)")
     print ("{:=>49}".format(""))
 
 
