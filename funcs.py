@@ -461,12 +461,15 @@ def sturh(args):
     rN = int(args[1][1::])
     iM = int(args[2])
 
-    if REG[rN].int + s64(iM) < 1000:
+    index = REG[rN].int + s64(iM)
+    print (REG[rT][47:55])
+    if index < 991:
         if rN == 28:
-            STK[REG[rN].int + s64(iM)] = get_byte(REG[rT].int, 16)
+            STK[index].int = REG[rT][56:64].int
+            STK[index+1].int = REG[rT][47:55].int
         else:
-            MEM[REG[rN].int + s64(iM)]= get_byte(REG[rT].int, 16)
-
+            MEM[index].int = REG[rT][56:64].int
+            MEM[index+1].int = REG[rT][47:55].int
     return
 
 def sturw(args):
@@ -474,22 +477,42 @@ def sturw(args):
     rN = int(args[1][1::])
     iM = int(args[2])
 
-    if REG[rN].int + s64(iM) < 1000:
+    index = REG[rN].int + s64(iM)
+    print(REG[rT].int)
+    byte = REG[rT][56:64]
+    bytes = REG[rT][49:57]
+    print("Bytetype ", (byte), (bytes))
+    if index < 991:
         if rN == 28:
-            STK[REG[rN].int + s64(iM)] = get_byte(REG[rT].int, 24)
+            STK[index].int = REG[rT][56:64].int
+            STK[index + 1].int = REG[rT][47:55].int
+            STK[index + 2].int = REG[rT][36:46].int
+
         else:
-            MEM[REG[rN].int + s64(iM)]= get_byte(REG[rT].int, 24)
+            MEM[index].int = REG[rT][56:64].int
+            MEM[index + 1].int = REG[rT][47:55].int
+            MEM[index + 2].int = REG[rT][36:46].int
     return
 
 def stxr(args):
-    rT = int(args[0][1::])
-    rN = int(args[1][1::])
-    if not REG[9]:
-        if rN == 28:
-            STK[REG[rN].int] = rT
-        else:
-            MEM[REG[rN].int]= REG[rT].int
+    rS = int(args[0][1::])  # X9
+    rT = int(args[2][1::]) # SRC
+    rN = int(args[1][1::]) # DST
+
+    if rS:
+        j = REG[rN].int
+        print(j)
+        if j < 991:
+            if rN == 28:
+                for byte in REG[rT].cut(8):
+                    STK[j] = byte
+                    j += 1
+            else:
+                for byte in REG[rT].cut(8):
+                    MEM[j] = byte
+                    j += 1
     return
+
 
 def setZero():
     REG[31].int = 0
