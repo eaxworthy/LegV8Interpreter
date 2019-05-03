@@ -293,36 +293,83 @@ def ldurb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    if REG[rN].int + s64(iM) < 1000:
-        # extend the new result mem to 64 from 8
-        REG[rT] = get_byte(MEM[REG[rN].int + s64(iM)].int, 8)
 
+    index = REG[rN].int + s64(iM)
+    REG[rT] = s.b.BitArray(length=64)
+    # reset rT to 0
+    print(type(REG[rT]))
+    if index < 991:
+        if rT == 28:
+            REG[rT].overwrite(STK[index], 56)
+        else:
+           REG[rT].overwrite(MEM[index], 56)
     return
 
 def ldurh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    if REG[rN].int + s64(iM) < 1000:
-        REG[rT] = get_byte(MEM[REG[rN].int + s64(iM)].int, 16)
+
+    index = REG[rN].int + s64(iM)
+    REG[rT] = s.b.BitArray(length=64)
+    # reset rT to 0
+    print(type(REG[rT]))
+    if index < 991:
+        if rT == 28:
+            REG[rT].overwrite(STK[index + 1], 56)
+            REG[rT].overwrite(STK[index], 48)
+        else:
+            REG[rT].overwrite(MEM[index+1], 56)
+            REG[rT].overwrite(MEM[index], 48)
+
     return
 
 def ldursw(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    if REG[rN].int + s64(iM) < 1000:
-        REG[rT] = get_byte(MEM[REG[rN].int + s64(iM)].int, 24)
+
+    index = REG[rN].int + s64(iM)
+    temp = s.b.BitArray(length=32)
+    # reset rT to 0
+    print(type(REG[rT]))
+    if index < 991:
+        if rT == 28:
+            temp.overwrite(STK[index + 3], 24)
+            temp.overwrite(STK[index + 2], 16)
+            temp.overwrite(STK[index + 1], 8)
+            temp.overwrite(STK[index], 0)
+            REG[rT].int = s64(temp.int)
+        else:
+            temp.overwrite(MEM[index + 3], 24)
+            temp.overwrite(MEM[index + 2], 16)
+            temp.overwrite(MEM[index + 1], 8)
+            temp.overwrite(MEM[index], 0)
+            REG[rT].int = s64(temp.int)
+            print (REG[rT].hex)
+
     return
+
 
 def ldxr(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
 
-    if REG[rN].int + s64(iM) < 1000:
-        REG[rT] = MEM[REG[rN].int + s64(iM)]
-        REG[9] = 1
+    index = REG[rN].int + s64(iM)
+    # reset rT to 0
+    print(type(REG[rT]))
+    REG[rT].clear()
+    if index < 991:
+        if rT == 28:
+            for i in range(8):
+                REG[rT].insert(STK[index + i], i * 8)
+        else:
+            for i in range(8):
+                REG[rT].insert(MEM[index + i], i * 8)
+
+        REG[9].int = 1
+
     return
 
 #tested
@@ -445,15 +492,11 @@ def sturb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
-    index = REG[rN].int + s64(iM)
-    print(REG[rT].int)
-    byte = REG[rT][56:64]
-    print("Bytetype ", (byte))
-    if index < 991:
+    if REG[rN].int + s64(iM) < 1000:
         if rN == 28:
-            STK[index].int = byte.int
+            STK[REG[rN].int + s64(iM)] = get_byte(REG[rT].int, 8)
         else:
-            MEM[index].int = byte.int
+            MEM[REG[rN].int + s64(iM)]= get_byte(REG[rT].int, 8)
     return
 
 def sturh(args):
@@ -484,7 +527,7 @@ def sturw(args):
 def stxr(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
-    if not REG[9]:
+    if not REG[9].int:
         if rN == 28:
             STK[REG[rN].int] = rT
         else:
