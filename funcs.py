@@ -350,28 +350,6 @@ def ldursw(args):
 
     return
 
-
-def ldxr(args):
-    rT = int(args[0][1::])
-    rN = int(args[1][1::])
-    iM = int(args[2])
-
-    index = REG[rN].int + s64(iM)
-    # reset rT to 0
-    print(type(REG[rT]))
-    REG[rT].clear()
-    if index < 991:
-        if rT == 28:
-            for i in range(8):
-                REG[rT].insert(STK[index + i], i * 8)
-        else:
-            for i in range(8):
-                REG[rT].insert(MEM[index + i], i * 8)
-
-        REG[9].int = 1
-
-    return
-
 #tested
 def lsl(args):
     rD = int(args[0][1::])
@@ -536,27 +514,6 @@ def sturw(args):
             MEM[index + 1].int = REG[rT][47:55].int
             MEM[index + 2].int = REG[rT][36:46].int
     return
-
-def stxr(args):
-    rS = int(args[0][1::])  # X9
-    rT = int(args[2][1::]) # SRC
-    rN = int(args[1][1::]) # DST
-
-    if rS:
-        j = REG[rN].int
-        print(j)
-        if j < 991:
-            if rN == 28:
-                for byte in REG[rT].cut(8):
-                    STK[j] = byte
-                    j += 1
-            else:
-                for byte in REG[rT].cut(8):
-                    MEM[j] = byte
-                    j += 1
-
-    return
-
 
 def setZero():
     REG[31].int = 0
