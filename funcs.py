@@ -203,6 +203,40 @@ def bhi(args):
             s.ip = LBS[args[0]]
     return
 
+def bmi(args):
+    if s.flags[1] == 1:
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
+    return
+
+def bpl(args):
+    if not s.flags[1]:
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
+    return
+
+def bvs(args):
+    if s.flags[3] == 1:
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
+    return
+
+def bvc(args):
+    if not s.flags[3]:
+        if args[0] in LBS:
+            s.ip = LBS[args[0]]
+    return
+
+def bal(args):
+    if args[0] in LBS:
+        s.ip = LBS[args[0]]
+    return
+
+def bnv(args):
+    if args[0] in LBS:
+        s.ip = LBS[args[0]]
+    return
+
 #tested
 def bl(args):
     REG[30].int = s.ip + 1
