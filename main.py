@@ -49,7 +49,6 @@ functions = {
     'LDURB': f.ldurb,
     'LDURH': f.ldurh,
     'LDURSW': f.ldursw,
-    'LDXR': f.ldxr,
     'LSL': f.lsl,
     'LSR': f.lsr,
     'ORR': f.orr,
@@ -62,7 +61,6 @@ functions = {
     'STURB': f.sturb,
     'STURH': f.sturh,
     'STURW': f.sturw,
-    'STXR': f.stxr,
 }
 
 def load_memory():
