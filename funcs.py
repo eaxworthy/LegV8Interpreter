@@ -308,7 +308,7 @@ def ldur(args):
     #reset rT to 0
     REG[rT].clear()
     if  index < 991:
-        if rT == 28:
+        if rN == 28:
             for i in range(8):
                 REG[rT].insert(STK[index+i], i*8)
         else:
@@ -326,7 +326,7 @@ def ldurb(args):
     REG[rT] = s.b.BitArray(length=64)
     # reset rT to 0
     if index < 991:
-        if rT == 28:
+        if rN == 28:
             REG[rT].overwrite(STK[index], 56)
         else:
            REG[rT].overwrite(MEM[index], 56)
@@ -342,7 +342,7 @@ def ldurh(args):
     REG[rT] = s.b.BitArray(length=64)
     # reset rT to 0
     if index < 991:
-        if rT == 28:
+        if rN == 28:
             REG[rT].overwrite(STK[index + 1], 56)
             REG[rT].overwrite(STK[index], 48)
         else:
@@ -361,7 +361,7 @@ def ldursw(args):
     temp = s.b.BitArray(length=32)
     # reset rT to 0
     if index < 991:
-        if rT == 28:
+        if rN == 28:
             temp.overwrite(STK[index + 3], 24)
             temp.overwrite(STK[index + 2], 16)
             temp.overwrite(STK[index + 1], 8)

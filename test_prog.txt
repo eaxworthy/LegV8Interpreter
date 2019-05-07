@@ -15,5 +15,6 @@ FUN: CBZ X0, DONE
  ADD X0, X0, X19
  LDUR X30, [x28, #8]
  LDUR X19, [x28, #16]
- ADDI x28, x28, #32 // (*)
+ ADDI X28, x28, #32
 DONE: BR X30
+DONE2:
