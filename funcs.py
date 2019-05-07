@@ -500,17 +500,19 @@ def stur(args):
                 j += 1
     return
 
+#tested
 def sturb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
     if REG[rN].int + s64(iM) < 1000:
         if rN == 28:
-            STK[REG[rN].int + s64(iM)] = get_byte(REG[rT].int, 8)
+            STK[REG[rN].int + s64(iM)].int = REG[rT][56:64].int
         else:
-            MEM[REG[rN].int + s64(iM)]= get_byte(REG[rT].int, 8)
+            MEM[REG[rN].int + s64(iM)].int = REG[rT][56:64].int
     return
 
+#tested
 def sturh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
@@ -520,11 +522,11 @@ def sturh(args):
     print (REG[rT][47:55])
     if index < 991:
         if rN == 28:
-            STK[index].int = REG[rT][56:64].int
-            STK[index+1].int = REG[rT][47:55].int
+            STK[index].int = REG[rT][48:56].int
+            STK[index + 1].int = REG[rT][56:64].int
         else:
-            MEM[index].int = REG[rT][56:64].int
-            MEM[index+1].int = REG[rT][47:55].int
+            MEM[index + 1].int = REG[rT][56:64].int
+            MEM[index].int = REG[rT][48:56].int
     return
 
 def sturw(args):
@@ -539,14 +541,16 @@ def sturw(args):
     print("Bytetype ", (byte), (bytes))
     if index < 991:
         if rN == 28:
-            STK[index].int = REG[rT][56:64].int
-            STK[index + 1].int = REG[rT][47:55].int
-            STK[index + 2].int = REG[rT][36:46].int
+            STK[index + 3].int = REG[rT][56:64].int
+            STK[index + 2].int = REG[rT][48:56].int
+            STK[index + 1].int = REG[rT][40:48].int
+            STK[index].int = REG[rT][32:40].int
 
         else:
-            MEM[index].int = REG[rT][56:64].int
-            MEM[index + 1].int = REG[rT][47:55].int
-            MEM[index + 2].int = REG[rT][36:46].int
+            MEM[index + 3].int = REG[rT][56:64].int
+            MEM[index + 2].int = REG[rT][48:56].int
+            MEM[index + 1].int = REG[rT][40:48].int
+            MEM[index ].int = REG[rT][32:40].int
     return
 
 def setZero():
