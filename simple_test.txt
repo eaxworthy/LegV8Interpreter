@@ -1,3 +1,2 @@
-ADDI x30, x30, #1
-ADDI x0, x0, #486048209
-STURW x0, [x30, #0]
+ADDI x30, x30, #0
+LDURSW x0, [x30, #4]

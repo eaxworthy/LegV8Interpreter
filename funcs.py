@@ -61,7 +61,6 @@ def adds(args):
     if (REG[rD].int != REG[rN].int + REG[rM].int):
         s.flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
-    print(s.flags)
     return
 
 #tested
@@ -80,7 +79,6 @@ def addis(args):
     if (REG[rD].int != REG[rN].int + iM):
         s.flags[3] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
-    print(s.flags)
     return
 
 #tested
@@ -110,7 +108,6 @@ def ands(args):
         s.flags[0] = 1
     if REG[rD].int < 0:
         s.flags[1] = 1
-    print(s.flags)
     return
 
 #tested
@@ -121,13 +118,11 @@ def andis(args):
     s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int & s64(iM))
     #show stored result as int and hex
-    print(REG[rD].int, ' ', REG[rD])
     if not REG[rD].int:
         s.flags[0] = 1
     if REG[rD].int < 0:
         s.flags[1] = 1
     #show flags: [0] = Z, [1] = N, [2] = C, [3] = V
-    print(s.flags)
     return
 
 #tested
@@ -240,7 +235,6 @@ def bnv(args):
 #tested
 def bl(args):
     REG[30].int = s.ip + 1
-    print(REG[30].int)
     if args[0] in LBS:
         s.ip = LBS[args[0]]
     return
@@ -312,7 +306,6 @@ def ldur(args):
     iM = int(args[2])
     index = REG[rN].int + s64(iM)
     #reset rT to 0
-    print(type(REG[rT]))
     REG[rT].clear()
     if  index < 991:
         if rT == 28:
@@ -323,6 +316,7 @@ def ldur(args):
                 REG[rT].insert(MEM[index+i], i*8)
     return
 
+#tested
 def ldurb(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
@@ -331,7 +325,6 @@ def ldurb(args):
     index = REG[rN].int + s64(iM)
     REG[rT] = s.b.BitArray(length=64)
     # reset rT to 0
-    print(type(REG[rT]))
     if index < 991:
         if rT == 28:
             REG[rT].overwrite(STK[index], 56)
@@ -339,6 +332,7 @@ def ldurb(args):
            REG[rT].overwrite(MEM[index], 56)
     return
 
+#tested
 def ldurh(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
@@ -347,7 +341,6 @@ def ldurh(args):
     index = REG[rN].int + s64(iM)
     REG[rT] = s.b.BitArray(length=64)
     # reset rT to 0
-    print(type(REG[rT]))
     if index < 991:
         if rT == 28:
             REG[rT].overwrite(STK[index + 1], 56)
@@ -358,6 +351,7 @@ def ldurh(args):
 
     return
 
+#tested
 def ldursw(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
@@ -366,7 +360,6 @@ def ldursw(args):
     index = REG[rN].int + s64(iM)
     temp = s.b.BitArray(length=32)
     # reset rT to 0
-    print(type(REG[rT]))
     if index < 991:
         if rT == 28:
             temp.overwrite(STK[index + 3], 24)
@@ -380,8 +373,6 @@ def ldursw(args):
             temp.overwrite(MEM[index + 1], 8)
             temp.overwrite(MEM[index], 0)
             REG[rT].int = s64(temp.int)
-            print (REG[rT].hex)
-
     return
 
 #tested
@@ -453,7 +444,6 @@ def subs(args):
     rM = int(args[2][1::])
     s.flags = [0]*4
     REG[rD].int = s64(REG[rN].int - REG[rM].int)
-    print(REG[rD].int)
     if not REG[rD].int:
         s.flags[0] = 1
     if REG[rD].int < 0:
@@ -462,7 +452,6 @@ def subs(args):
             s.flags[2] = 1
     if (REG[rD].int != REG[rN].int - REG[rM].int):
         s.flags[3] = 1
-    print(s.flags)
     return
 
 #tested
@@ -488,7 +477,6 @@ def stur(args):
     rN = int(args[1][1::])
     iM = int(args[2])
     j = REG[rN].int + s64(iM)
-    print(j)
     if j < 991:
         if rN == 28:
             for byte in REG[rT].cut(8):
@@ -519,7 +507,6 @@ def sturh(args):
     iM = int(args[2])
 
     index = REG[rN].int + s64(iM)
-    print (REG[rT][47:55])
     if index < 991:
         if rN == 28:
             STK[index].int = REG[rT][48:56].int
@@ -529,16 +516,15 @@ def sturh(args):
             MEM[index].int = REG[rT][48:56].int
     return
 
+#tested
 def sturw(args):
     rT = int(args[0][1::])
     rN = int(args[1][1::])
     iM = int(args[2])
 
     index = REG[rN].int + s64(iM)
-    print(REG[rT].int)
     byte = REG[rT][56:64]
     bytes = REG[rT][49:57]
-    print("Bytetype ", (byte), (bytes))
     if index < 991:
         if rN == 28:
             STK[index + 3].int = REG[rT][56:64].int

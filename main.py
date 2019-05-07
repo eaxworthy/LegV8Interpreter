@@ -111,7 +111,7 @@ if __name__ == '__main__':
     load_memory()
 
     #progFile = input("Enter name of program file: ")
-    with open("simple_test.txt", 'r') as file:
+    with open("test_prog.txt", 'r') as file:
         lines = file.readlines()
         for line in lines:
             if line != '\n':

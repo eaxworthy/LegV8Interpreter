@@ -14,7 +14,7 @@ ip = 0
 for count in range(32):
     x = b.BitArray(int = 0, length = 64)
     REG.append(x)
-REG[28].int = 999
+REG[28].int = 1000
 
 #initialize memory
 for count in range(1000):
