@@ -8,7 +8,7 @@ LBS = {}
 #let 0 = Z, 1 = N, 2 = C, 3 = V
 flags = [0, 0, 0, 0]
 
-ip = 0
+ip = 1
 
 #initialize registers
 for count in range(32):

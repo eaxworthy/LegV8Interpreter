@@ -3,10 +3,19 @@ Johnathan Soto and Elizabeth Axworthy
 Requires Python3.7.3 64-bit,
 Dependencies: bitstring, numpy
 
-For LDUR and STUR we assume that an immediate values given to signify
-the shift from the base address in a d-type instruction will
-be a multiple of 8, to represent that we're working with 64
-bit numbers (which are 8 bytes long). This follows the book' example
-For example: let x5 hold the base address of array A.
- LDUR x4 [x5, #8] would be allowed, and return A[1]
- LDUR x4 [x5, #7] would not be allowed, and would return 0
+Assumptions: Based on the sample input given, we assume that if the instruction
+pointer equals 0, it is the equivalent of a 'return 0', meaning successful
+completion. Thus, the list of instructions to execute are numbered 1 - N. We
+append an arbitrary label '-END-' at the beginning of our list of instructions,
+LegCode[0], to enforce this system. The first instruction to actually execute
+will be at LegCode[1], which will contain the first line found in the provided
+.txt file .
+
+Important Notes for writing programs: We use line number to simulate instruction
+address. Blank lines are ignored when parsing the .txt file. A jump to a
+destination that resolves to 4(decimal) will mean that the next instruction to
+execute will be the fourth line to actually contain text. Keep this in mind when
+writing programs that require jumping between different instructions. If you need
+to debug, add a 'print(LegCode)' to the main file before the while loop to see
+what instruction addresses your instructions have been assigned, and calculate
+which values you need to load accordingly.

@@ -3,6 +3,7 @@ import funcs as f
 import state as s
 import bitstring as b
 import re
+import sys
 
 
 # To see the values stored in a registers in a certain format:
@@ -109,9 +110,9 @@ if __name__ == '__main__':
 
     LegCode = []
     load_memory()
-
-    #progFile = input("Enter name of program file: ")
-    with open("test_prog.txt", 'r') as file:
+    LegCode.append("-END-")
+    progFile = input("Enter name of program file: ")
+    with open(progFile, 'r') as file:
         lines = file.readlines()
         for line in lines:
             if line != '\n':
@@ -120,7 +121,7 @@ if __name__ == '__main__':
     #First pass to collect labels. It then trims the label from the beginning of
     #the stored instruction so that we don't need to repeatedly check the beginning
     #of each lines when we enter the execution phase.
-    for N in range(len(LegCode)):
+    for N in range(1, len(LegCode), 1):
         x = LegCode[N]
         x = re.sub(r'[^\w\s]','',x)
         ins_params = x.split()
@@ -128,13 +129,12 @@ if __name__ == '__main__':
             s.LBS[ins_params[0]] = N
             LegCode[N] = re.sub(r'^\W*\w+\W*', '', LegCode[N])
 
-
-    while s.ip < len(LegCode):
+    while s.ip < len(LegCode) and s.ip > 0:
         print ("\n{:=>49}".format(""))
         runMode = input("(1) Run\n(2) Step\nChoice: ")
         print ("{:=>49}".format(""))
         if runMode == "1":
-            while s.ip < len(LegCode):
+            while s.ip < len(LegCode) and s.ip > 0:
                 N = s.ip
                 x = LegCode[s.ip]
                 if x != "":
@@ -166,3 +166,15 @@ if __name__ == '__main__':
     s.printStack()
     s.printMem()
     s.printFlags()
+    choice = input("\nWrite Output to File (1)Yes (2)No: ")
+    if choice == "1":
+        choice = input("Enter File Name *WITH .txt EXTENSION* : ")
+        file = open(choice,"w+")
+        orig_stdout = sys.stdout
+        sys.stdout = file
+        s.printRegs()
+        s.printStack()
+        s.printMem()
+        s.printFlags()
+        sys.stdout = orig_stdout
+        file.close()
