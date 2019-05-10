@@ -131,7 +131,7 @@ if __name__ == '__main__':
 
     while s.ip < len(LegCode) and s.ip > 0:
         print ("\n{:=>49}".format(""))
-        runMode = input("(1) Run\n(2) Step\nChoice: ")
+        runMode = input("(1) Run\n(2) Step\n(3) Stop\nChoice: ")
         print ("{:=>49}".format(""))
         if runMode == "1":
             while s.ip < len(LegCode) and s.ip > 0:
@@ -159,6 +159,18 @@ if __name__ == '__main__':
                 printValues()
                 if N == s.ip:
                     s.ip += 1
+        if runMode == "3":
+            choice = input("Enter File Name *WITH .txt EXTENSION* : ")
+            print ("Stopping program...\nPrinting contents of Memory and Registers to " + choice + "\n")
+            file = open(choice,"w+")
+            orig_stdout = sys.stdout
+            sys.stdout = file
+            s.printRegs()
+            s.printMem()
+            sys.stdout = orig_stdout
+            file.close()
+            # Ending program
+            quit()
 
 
     print("\n{:*>49}".format(""),"\nEnd of Legv8 Code:", "\n{:*>49}".format(""))
